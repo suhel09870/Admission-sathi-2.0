@@ -23,9 +23,10 @@ import Courses from "./pages/Courses";
 import Exams from "./pages/Exams";
 import Scholarships from "./pages/Scholarships";
 import Compare from "./pages/Compare";
-import Login from "./pages/Login";
+import Login from "./pages/login";
 import ForgotPassword from "./pages/ForgotPassword";
-import Signup from "./pages/Signup";
+import Signup from "./pages/signup";
+
 import ResetPassword from "./pages/ResetPassword";
 import Dashboard from "./pages/Dashboard";
 
