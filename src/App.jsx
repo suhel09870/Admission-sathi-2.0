@@ -6,6 +6,7 @@ import ImportantDates from "./pages/ImportantDates";
 import MyApplications from "./pages/MyApplications";
 import SavedColleges from "./pages/SavedColleges";
 import { useEffect, useState } from "react";
+import Footer from "./components/Footer";
 import "./App.css";
 import {
   Routes,
@@ -635,8 +636,8 @@ function App() {
         />
 
         <Route
-        path="/courses/:category"
-        element={<CourseDetail />}
+          path="/courses/:category"
+          element={<CourseDetail />}
         />
 
         <Route
@@ -645,15 +646,14 @@ function App() {
         />
 
         <Route
-         path="/exams/:category"
-         element={<ExamDetail />}
-         />
+          path="/exams/:category"
+          element={<ExamDetail />}
+        />
 
         <Route
           path="/exams/:category/:examId"
           element={<ExamInfo />}
-          />
-
+        />
 
         <Route
           path="/scholarships"
@@ -736,6 +736,8 @@ function App() {
         />
 
       </Routes>
+
+      <Footer />
     </div>
   );
 }

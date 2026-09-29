@@ -29,3 +29,178 @@ button {
 a {
   color: inherit;
 }
+/* =================================
+   NAVBAR - RESPONSIVE
+================================= */
+
+.site-header {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+
+/* =================================
+   DESKTOP
+================================= */
+
+@media (min-width: 851px) {
+
+  .site-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+  }
+
+  .site-brand {
+    flex: 0 0 auto;
+  }
+
+  .site-nav {
+    display: flex;
+    align-items: center;
+    gap: 26px;
+  }
+
+  .site-nav a {
+    white-space: nowrap;
+  }
+
+  .login-link {
+    order: 10;
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+}
+
+
+/* =================================
+   MOBILE
+================================= */
+
+@media (max-width: 850px) {
+
+  .site-header {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-rows: auto auto;
+    align-items: center;
+
+    width: 100%;
+    padding: 14px 16px;
+
+    gap: 12px 16px;
+  }
+
+  /* Brand */
+  .site-brand {
+    grid-column: 1;
+    grid-row: 1;
+
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    text-decoration: none;
+  }
+
+  .site-brand strong {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .site-brand span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Login */
+  .login-link {
+    grid-column: 2;
+    grid-row: 1;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    flex: 0 0 auto;
+
+    white-space: nowrap;
+
+    padding: 9px 14px;
+  }
+
+  /* Navigation */
+  .site-nav {
+    grid-column: 1 / -1;
+    grid-row: 2;
+
+    width: 100%;
+    min-width: 0;
+
+    display: flex;
+    align-items: center;
+
+    gap: 20px;
+
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    white-space: nowrap;
+
+    padding: 4px 2px 7px;
+
+    scrollbar-width: none;
+
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .site-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .site-nav a {
+    flex: 0 0 auto;
+
+    white-space: nowrap;
+
+    text-decoration: none;
+  }
+}
+
+
+/* =================================
+   SMALL PHONES
+================================= */
+
+@media (max-width: 500px) {
+
+  .site-header {
+    padding: 13px 14px;
+    gap: 10px 12px;
+  }
+
+  .site-nav {
+    gap: 18px;
+  }
+
+  .site-nav a {
+    font-size: 13px;
+  }
+
+  .login-link {
+    font-size: 13px;
+    padding: 8px 12px;
+  }
+
+  .site-brand strong {
+    font-size: 15px;
+  }
+
+  .site-brand span {
+    font-size: 10px;
+  }
+}
