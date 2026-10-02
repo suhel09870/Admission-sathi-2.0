@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "../lib/supabase";
@@ -7,10 +8,6 @@ export default function SavedColleges() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [removingId, setRemovingId] = useState(null);
-
-  useEffect(() => {
-    loadSavedColleges();
-  }, []);
 
   async function loadSavedColleges() {
     setLoading(true);
@@ -82,6 +79,10 @@ export default function SavedColleges() {
     setColleges(sortedColleges);
     setLoading(false);
   }
+
+  useEffect(() => {
+    loadSavedColleges();
+  }, []);
 
   async function removeCollege(collegeId) {
     setRemovingId(collegeId);

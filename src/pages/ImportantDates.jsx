@@ -7,10 +7,6 @@ export default function ImportantDates() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  useEffect(() => {
-    loadImportantDates();
-  }, []);
-
   async function loadImportantDates() {
     setLoading(true);
     setError("");
@@ -51,6 +47,10 @@ export default function ImportantDates() {
     setDates(data || []);
     setLoading(false);
   }
+
+  useEffect(() => {
+    loadImportantDates();
+  }, []);
 
   function formatDate(dateValue) {
     if (!dateValue) {
@@ -304,11 +304,9 @@ export default function ImportantDates() {
                             }}
                           >
                             🎓 {college.name}
-
                             {college.city
                               ? ` • ${college.city}`
                               : ""}
-
                             {college.state
                               ? `, ${college.state}`
                               : ""}

@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "../lib/supabase";
@@ -14,10 +15,6 @@ export default function MyApplications() {
   const [editStatus, setEditStatus] = useState("");
   const [editDate, setEditDate] = useState("");
   const [editNotes, setEditNotes] = useState("");
-
-  useEffect(() => {
-    loadApplications();
-  }, []);
 
   async function loadApplications() {
     setLoading(true);
@@ -81,6 +78,10 @@ export default function MyApplications() {
     setApplications(data || []);
     setLoading(false);
   }
+
+  useEffect(() => {
+    loadApplications();
+  }, []);
 
   function startEditing(application) {
     setEditingId(application.id);

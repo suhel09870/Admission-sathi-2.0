@@ -23,9 +23,9 @@ import Courses from "./pages/Courses";
 import Exams from "./pages/Exams";
 import Scholarships from "./pages/Scholarships";
 import Compare from "./pages/Compare";
-import Login from "./pages/Login";
+import Login from "./pages/login";
 import ForgotPassword from "./pages/ForgotPassword";
-import Signup from "./pages/Signup";
+import Signup from "./pages/signup";
 
 import ResetPassword from "./pages/ResetPassword";
 import Dashboard from "./pages/Dashboard";
@@ -103,11 +103,6 @@ function ProfilePage() {
   const [error, setError] = useState("");
 
 
-  useEffect(() => {
-    loadProfile();
-  }, []);
-
-
   async function loadProfile() {
     setLoading(true);
     setError("");
@@ -153,6 +148,9 @@ function ProfilePage() {
     setLoading(false);
   }
 
+  useEffect(() => {
+    loadProfile();
+  }, []);
 
   async function handleSave(event) {
     event.preventDefault();
@@ -582,7 +580,6 @@ function ProfilePage() {
   );
 }
 
-
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -734,6 +731,11 @@ function App() {
         <Route
           path="/scholarships/:id"
           element={<ScholarshipDetail />}
+        />
+
+        <Route
+          path="*"
+          element={<Navigate to="/" replace />}
         />
 
       </Routes>

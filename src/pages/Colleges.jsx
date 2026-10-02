@@ -19,10 +19,6 @@ export default function Colleges() {
   const [savingCollegeId, setSavingCollegeId] =
     useState(null);
 
-  useEffect(() => {
-    loadColleges();
-  }, []);
-
   async function loadColleges() {
     setLoading(true);
     setError("");
@@ -90,6 +86,11 @@ export default function Colleges() {
 
     setLoading(false);
   }
+
+
+  useEffect(() => {
+    loadColleges();
+  }, []);
 
   async function loadSavedColleges() {
     const {
