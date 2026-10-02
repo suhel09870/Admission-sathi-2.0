@@ -8,9 +8,7 @@ export default function Colleges() {
 
   const [colleges, setColleges] = useState([]);
   const [programs, setPrograms] = useState([]);
-  const [savedCollegeIds, setSavedCollegeIds] = useState(
-    new Set()
-  );
+  const [savedCollegeIds, setSavedCollegeIds] = useState(new Set());
 
   const [search, setSearch] = useState(
     () => searchParams.get("search") || ""
@@ -29,14 +27,6 @@ export default function Colleges() {
   const [error, setError] = useState("");
   const [savingCollegeId, setSavingCollegeId] =
     useState(null);
-
-  useEffect(() => {
-    const urlSearch = searchParams.get("search") || "";
-
-    if (urlSearch !== search) {
-      setSearch(urlSearch);
-    }
-  }, [searchParams, search]);
 
   useEffect(() => {
     async function loadColleges() {
@@ -319,7 +309,6 @@ export default function Colleges() {
         college.ownership,
         college.affiliation,
         college.category,
-        college.search_name,
         ...collegePrograms,
       ]
         .filter(Boolean)
@@ -505,21 +494,6 @@ export default function Colleges() {
               }}
             >
               {error}
-            </p>
-          )}
-
-          {search.trim() && (
-            <p
-              style={{
-                marginBottom: "18px",
-                color: "#6b7280",
-                fontSize: "14px",
-              }}
-            >
-              Showing results for{" "}
-              <strong style={{ color: "#111827" }}>
-                "{search.trim()}"
-              </strong>
             </p>
           )}
 
