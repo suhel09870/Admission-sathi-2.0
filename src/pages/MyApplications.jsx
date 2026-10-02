@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "../lib/supabase";
@@ -16,70 +15,70 @@ export default function MyApplications() {
   const [editDate, setEditDate] = useState("");
   const [editNotes, setEditNotes] = useState("");
 
-  async function loadApplications() {
-    setLoading(true);
-    setError("");
-
-    const {
-      data: { user },
-      error: userError,
-    } = await supabase.auth.getUser();
-
-    if (userError || !user) {
-      setError("Please log in to view your applications.");
-      setLoading(false);
-      return;
-    }
-
-    const { data, error: applicationError } =
-      await supabase
-        .from("applications")
-        .select(`
-          id,
-          college_id,
-          program_id,
-          status,
-          notes,
-          application_date,
-          created_at,
-          updated_at,
-          colleges (
-            id,
-            name,
-            city,
-            state,
-            institution_type,
-            ownership,
-            official_website
-          ),
-          programs (
-            id,
-            program_name,
-            duration,
-            fees
-          )
-        `)
-        .eq("user_id", user.id)
-        .order("created_at", {
-          ascending: false,
-        });
-
-    if (applicationError) {
-      console.error(
-        "Applications loading error:",
-        applicationError
-      );
-
-      setError(applicationError.message);
-      setLoading(false);
-      return;
-    }
-
-    setApplications(data || []);
-    setLoading(false);
-  }
-
   useEffect(() => {
+    async function loadApplications() {
+      setLoading(true);
+      setError("");
+
+      const {
+        data: { user },
+        error: userError,
+      } = await supabase.auth.getUser();
+
+      if (userError || !user) {
+        setError("Please log in to view your applications.");
+        setLoading(false);
+        return;
+      }
+
+      const { data, error: applicationError } =
+        await supabase
+          .from("applications")
+          .select(`
+            id,
+            college_id,
+            program_id,
+            status,
+            notes,
+            application_date,
+            created_at,
+            updated_at,
+            colleges (
+              id,
+              name,
+              city,
+              state,
+              institution_type,
+              ownership,
+              official_website
+            ),
+            programs (
+              id,
+              program_name,
+              duration,
+              fees
+            )
+          `)
+          .eq("user_id", user.id)
+          .order("created_at", {
+            ascending: false,
+          });
+
+      if (applicationError) {
+        console.error(
+          "Applications loading error:",
+          applicationError
+        );
+
+        setError(applicationError.message);
+        setLoading(false);
+        return;
+      }
+
+      setApplications(data || []);
+      setLoading(false);
+    }
+
     loadApplications();
   }, []);
 

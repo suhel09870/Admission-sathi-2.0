@@ -7,48 +7,48 @@ export default function ImportantDates() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  async function loadImportantDates() {
-    setLoading(true);
-    setError("");
+  useEffect(() => {
+    async function loadImportantDates() {
+      setLoading(true);
+      setError("");
 
-    const { data, error: datesError } = await supabase
-      .from("important_dates")
-      .select(`
-        id,
-        college_id,
-        title,
-        date,
-        description,
-        source_url,
-        verification_status,
-        colleges (
+      const { data, error: datesError } = await supabase
+        .from("important_dates")
+        .select(`
           id,
-          name,
-          city,
-          state,
-          institution_type,
-          ownership
-        )
-      `)
-      .order("date", { ascending: true });
+          college_id,
+          title,
+          date,
+          description,
+          source_url,
+          verification_status,
+          colleges (
+            id,
+            name,
+            city,
+            state,
+            institution_type,
+            ownership
+          )
+        `)
+        .order("date", { ascending: true });
 
-    if (datesError) {
-      console.error(
-        "Important dates loading error:",
-        datesError
-      );
+      if (datesError) {
+        console.error(
+          "Important dates loading error:",
+          datesError
+        );
 
-      setError(datesError.message);
-      setDates([]);
+        setError(datesError.message);
+        setDates([]);
+        setLoading(false);
+        return;
+      }
+
+      setDates(data || []);
       setLoading(false);
-      return;
     }
 
-    setDates(data || []);
-    setLoading(false);
-  }
-
-  useEffect(() => {
     loadImportantDates();
   }, []);
 

@@ -1,3 +1,4 @@
+
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "../lib/supabase";
@@ -19,109 +20,108 @@ export default function Colleges() {
   const [savingCollegeId, setSavingCollegeId] =
     useState(null);
 
-  async function loadColleges() {
-    setLoading(true);
-    setError("");
-
-    const collegeResult = await supabase
-      .from("colleges")
-      .select("*")
-      .order("name", { ascending: true });
-
-    if (collegeResult.error) {
-      console.error(
-        "College loading error:",
-        collegeResult.error
-      );
-
-      setError("Colleges could not be loaded.");
-      setColleges([]);
-      setLoading(false);
-      return;
-    }
-
-    const programResult = await supabase
-      .from("programs")
-      .select("college_id");
-
-    if (programResult.error) {
-      console.error(
-        "Program loading error:",
-        programResult.error
-      );
-
-      setError(
-        "Program information could not be loaded."
-      );
-      setColleges([]);
-      setLoading(false);
-      return;
-    }
-
-    const programCounts = {};
-
-    (programResult.data || []).forEach((program) => {
-      const collegeId = program.college_id;
-
-      if (
-        collegeId !== null &&
-        collegeId !== undefined
-      ) {
-        programCounts[collegeId] =
-          (programCounts[collegeId] || 0) + 1;
-      }
-    });
-
-    const formattedColleges = (
-      collegeResult.data || []
-    ).map((college) => ({
-      ...college,
-      programCount:
-        programCounts[college.id] || 0,
-    }));
-
-    setColleges(formattedColleges);
-
-    await loadSavedColleges();
-
-    setLoading(false);
-  }
-
-
   useEffect(() => {
+    async function loadColleges() {
+      setLoading(true);
+      setError("");
+
+      const collegeResult = await supabase
+        .from("colleges")
+        .select("*")
+        .order("name", { ascending: true });
+
+      if (collegeResult.error) {
+        console.error(
+          "College loading error:",
+          collegeResult.error
+        );
+
+        setError("Colleges could not be loaded.");
+        setColleges([]);
+        setLoading(false);
+        return;
+      }
+
+      const programResult = await supabase
+        .from("programs")
+        .select("college_id");
+
+      if (programResult.error) {
+        console.error(
+          "Program loading error:",
+          programResult.error
+        );
+
+        setError(
+          "Program information could not be loaded."
+        );
+        setColleges([]);
+        setLoading(false);
+        return;
+      }
+
+      const programCounts = {};
+
+      (programResult.data || []).forEach((program) => {
+        const collegeId = program.college_id;
+
+        if (
+          collegeId !== null &&
+          collegeId !== undefined
+        ) {
+          programCounts[collegeId] =
+            (programCounts[collegeId] || 0) + 1;
+        }
+      });
+
+      const formattedColleges = (
+        collegeResult.data || []
+      ).map((college) => ({
+        ...college,
+        programCount:
+          programCounts[college.id] || 0,
+      }));
+
+      setColleges(formattedColleges);
+
+      await loadSavedColleges();
+
+      setLoading(false);
+    }
+
+    async function loadSavedColleges() {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (!user) {
+        setSavedCollegeIds(new Set());
+        return;
+      }
+
+      const { data, error: savedError } =
+        await supabase
+          .from("saved_colleges")
+          .select("college_id")
+          .eq("user_id", user.id);
+
+      if (savedError) {
+        console.error(
+          "Saved colleges loading error:",
+          savedError
+        );
+        return;
+      }
+
+      const ids = new Set(
+        (data || []).map((item) => item.college_id)
+      );
+
+      setSavedCollegeIds(ids);
+    }
+
     loadColleges();
   }, []);
-
-  async function loadSavedColleges() {
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    if (!user) {
-      setSavedCollegeIds(new Set());
-      return;
-    }
-
-    const { data, error: savedError } =
-      await supabase
-        .from("saved_colleges")
-        .select("college_id")
-        .eq("user_id", user.id);
-
-    if (savedError) {
-      console.error(
-        "Saved colleges loading error:",
-        savedError
-      );
-      return;
-    }
-
-    const ids = new Set(
-      (data || []).map((item) => item.college_id)
-    );
-
-    setSavedCollegeIds(ids);
-  }
 
   async function toggleSavedCollege(collegeId) {
     setSavingCollegeId(collegeId);

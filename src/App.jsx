@@ -1,3 +1,4 @@
+
 import ExamDetail from "./pages/ExamDetail";
 import ExamInfo from "./pages/ExamInfo";
 import CourseDetail from "./pages/CourseDetail";
@@ -103,52 +104,52 @@ function ProfilePage() {
   const [error, setError] = useState("");
 
 
-  async function loadProfile() {
-    setLoading(true);
-    setError("");
-
-    const {
-      data: { user },
-      error: userError,
-    } = await supabase.auth.getUser();
-
-    if (userError || !user) {
-      setError("Please log in to view your profile.");
-      setLoading(false);
-      return;
-    }
-
-    setUser(user);
-
-    const { data, error: profileError } = await supabase
-      .from("profiles")
-      .select(
-        "id, full_name, phone, city, preferred_course, created_at, updated_at"
-      )
-      .eq("id", user.id)
-      .maybeSingle();
-
-    if (profileError) {
-      console.error("Profile load error:", profileError);
-      setError(profileError.message);
-      setLoading(false);
-      return;
-    }
-
-    setFullName(
-      data?.full_name ||
-        user.user_metadata?.full_name ||
-        ""
-    );
-
-    setPhone(data?.phone || "");
-    setCity(data?.city || "");
-    setPreferredCourse(data?.preferred_course || "");
-
-    setLoading(false);
-  }
-
   useEffect(() => {
+    async function loadProfile() {
+      setLoading(true);
+      setError("");
+
+      const {
+        data: { user },
+        error: userError,
+      } = await supabase.auth.getUser();
+
+      if (userError || !user) {
+        setError("Please log in to view your profile.");
+        setLoading(false);
+        return;
+      }
+
+      setUser(user);
+
+      const { data, error: profileError } = await supabase
+        .from("profiles")
+        .select(
+          "id, full_name, phone, city, preferred_course, created_at, updated_at"
+        )
+        .eq("id", user.id)
+        .maybeSingle();
+
+      if (profileError) {
+        console.error("Profile load error:", profileError);
+        setError(profileError.message);
+        setLoading(false);
+        return;
+      }
+
+      setFullName(
+        data?.full_name ||
+          user.user_metadata?.full_name ||
+          ""
+      );
+
+      setPhone(data?.phone || "");
+      setCity(data?.city || "");
+      setPreferredCourse(data?.preferred_course || "");
+
+      setLoading(false);
+    }
+
     loadProfile();
   }, []);
 

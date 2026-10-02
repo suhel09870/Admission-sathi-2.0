@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "../lib/supabase";
@@ -9,23 +8,28 @@ export default function SavedColleges() {
   const [error, setError] = useState("");
   const [removingId, setRemovingId] = useState(null);
 
-  async function loadSavedColleges() {
-    setLoading(true);
-    setError("");
+  useEffect(() => {
+    async function loadSavedColleges() {
+      setLoading(true);
+      setError("");
 
-    const {
-      data: { user },
-      error: userError,
-    } = await supabase.auth.getUser();
+      const {
+        data: { user },
+        error: userError,
+      } = await supabase.auth.getUser();
 
-    if (userError || !user) {
-      setError("Please log in to view your saved colleges.");
-      setLoading(false);
-      return;
-    }
+      if (userError || !user) {
+        setError(
+          "Please log in to view your saved colleges."
+        );
+        setLoading(false);
+        return;
+      }
 
-    const { data: savedData, error: savedError } =
-      await supabase
+      const {
+        data: savedData,
+        error: savedError,
+      } = await supabase
         .from("saved_colleges")
         .select("college_id, created_at")
         .eq("user_id", user.id)
@@ -33,54 +37,57 @@ export default function SavedColleges() {
           ascending: false,
         });
 
-    if (savedError) {
-      console.error(savedError);
-      setError(savedError.message);
-      setLoading(false);
-      return;
-    }
+      if (savedError) {
+        console.error(savedError);
+        setError(savedError.message);
+        setLoading(false);
+        return;
+      }
 
-    if (!savedData || savedData.length === 0) {
-      setColleges([]);
-      setLoading(false);
-      return;
-    }
+      if (!savedData || savedData.length === 0) {
+        setColleges([]);
+        setLoading(false);
+        return;
+      }
 
-    const collegeIds = savedData.map(
-      (item) => item.college_id
-    );
+      const collegeIds = savedData.map(
+        (item) => item.college_id
+      );
 
-    const { data: collegeData, error: collegeError } =
-      await supabase
+      const {
+        data: collegeData,
+        error: collegeError,
+      } = await supabase
         .from("colleges")
         .select("*")
         .in("id", collegeIds);
 
-    if (collegeError) {
-      console.error(collegeError);
-      setError(collegeError.message);
+      if (collegeError) {
+        console.error(collegeError);
+        setError(collegeError.message);
+        setLoading(false);
+        return;
+      }
+
+      const savedOrder = new Map(
+        savedData.map((item, index) => [
+          item.college_id,
+          index,
+        ])
+      );
+
+      const sortedColleges = [
+        ...(collegeData || []),
+      ].sort(
+        (a, b) =>
+          (savedOrder.get(a.id) ?? 9999) -
+          (savedOrder.get(b.id) ?? 9999)
+      );
+
+      setColleges(sortedColleges);
       setLoading(false);
-      return;
     }
 
-    const savedOrder = new Map(
-      savedData.map((item, index) => [
-        item.college_id,
-        index,
-      ])
-    );
-
-    const sortedColleges = [...(collegeData || [])].sort(
-      (a, b) =>
-        (savedOrder.get(a.id) ?? 9999) -
-        (savedOrder.get(b.id) ?? 9999)
-    );
-
-    setColleges(sortedColleges);
-    setLoading(false);
-  }
-
-  useEffect(() => {
     loadSavedColleges();
   }, []);
 
