@@ -1,3 +1,4 @@
+
 import { Link, useParams } from "react-router-dom";
 
 const courseData = {
@@ -274,10 +275,6 @@ const courseData = {
   },
 };
 
-function createCourseSlug(course) {
-  return encodeURIComponent(course);
-}
-
 export default function CourseDetail() {
   const { category, course } = useParams();
 
@@ -314,9 +311,6 @@ export default function CourseDetail() {
     );
   }
 
-  /*
-   * INDIVIDUAL COURSE DETAIL
-   */
   if (course) {
     const courseTitle = decodeURIComponent(course);
 
@@ -374,9 +368,7 @@ export default function CourseDetail() {
 
           <h1>{selectedCourse.name}</h1>
 
-          <p>
-            {selectedCourse.description}
-          </p>
+          <p>{selectedCourse.description}</p>
         </section>
 
         <section className="simple-page-content">
@@ -389,9 +381,7 @@ export default function CourseDetail() {
           >
             <h3>About this course</h3>
 
-            <p>
-              {selectedCourse.description}
-            </p>
+            <p>{selectedCourse.description}</p>
 
             <div
               style={{
@@ -420,11 +410,7 @@ export default function CourseDetail() {
                   Level
                 </strong>
 
-                <span
-                  style={{
-                    color: "#6b7280",
-                  }}
-                >
+                <span style={{ color: "#6b7280" }}>
                   {selectedCourse.level}
                 </span>
               </div>
@@ -447,11 +433,7 @@ export default function CourseDetail() {
                   Duration
                 </strong>
 
-                <span
-                  style={{
-                    color: "#6b7280",
-                  }}
-                >
+                <span style={{ color: "#6b7280" }}>
                   {selectedCourse.duration}
                 </span>
               </div>
@@ -474,11 +456,7 @@ export default function CourseDetail() {
                   Category
                 </strong>
 
-                <span
-                  style={{
-                    color: "#6b7280",
-                  }}
-                >
+                <span style={{ color: "#6b7280" }}>
                   {title}
                 </span>
               </div>
@@ -498,7 +476,7 @@ export default function CourseDetail() {
                 )}`}
                 className="view-college"
               >
-                Find Colleges → 
+                Find Colleges →
               </Link>
 
               <Link
@@ -514,9 +492,6 @@ export default function CourseDetail() {
     );
   }
 
-  /*
-   * COURSE CATEGORY DETAIL
-   */
   return (
     <main className="simple-page">
       <section className="simple-page-hero">
@@ -560,9 +535,7 @@ export default function CourseDetail() {
             >
               <h3>{courseItem.name}</h3>
 
-              <p>
-                {courseItem.description}
-              </p>
+              <p>{courseItem.description}</p>
 
               <span
                 style={{
