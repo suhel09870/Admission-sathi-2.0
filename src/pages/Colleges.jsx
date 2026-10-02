@@ -1,17 +1,24 @@
-
 import { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { supabase } from "../lib/supabase";
 
 export default function Colleges() {
+  const [searchParams, setSearchParams] = useSearchParams();
+
   const [colleges, setColleges] = useState([]);
+  const [programs, setPrograms] = useState([]);
   const [savedCollegeIds, setSavedCollegeIds] = useState(new Set());
 
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState(
+    searchParams.get("search") || ""
+  );
+
   const [stateFilter, setStateFilter] =
     useState("All States");
+
   const [ownershipFilter, setOwnershipFilter] =
     useState("All Ownership");
+
   const [typeFilter, setTypeFilter] =
     useState("All Types");
 
@@ -19,6 +26,18 @@ export default function Colleges() {
   const [error, setError] = useState("");
   const [savingCollegeId, setSavingCollegeId] =
     useState(null);
+
+  useEffect(() => {
+    const urlSearch = searchParams.get("search") || "";
+
+    setSearch((previousSearch) => {
+      if (previousSearch === urlSearch) {
+        return previousSearch;
+      }
+
+      return urlSearch;
+    });
+  }, [searchParams]);
 
   useEffect(() => {
     async function loadColleges() {
@@ -44,7 +63,7 @@ export default function Colleges() {
 
       const programResult = await supabase
         .from("programs")
-        .select("college_id");
+        .select("college_id, program_name");
 
       if (programResult.error) {
         console.error(
@@ -55,14 +74,20 @@ export default function Colleges() {
         setError(
           "Program information could not be loaded."
         );
+
         setColleges([]);
+        setPrograms([]);
         setLoading(false);
         return;
       }
 
+      const programData = programResult.data || [];
+
+      setPrograms(programData);
+
       const programCounts = {};
 
-      (programResult.data || []).forEach((program) => {
+      programData.forEach((program) => {
         const collegeId = program.college_id;
 
         if (
@@ -155,9 +180,11 @@ export default function Colleges() {
           "Remove saved college error:",
           deleteError
         );
+
         setError(
           "Could not remove this college."
         );
+
         setSavingCollegeId(null);
         return;
       }
@@ -181,9 +208,11 @@ export default function Colleges() {
           "Save college error:",
           insertError
         );
+
         setError(
           "Could not save this college."
         );
+
         setSavingCollegeId(null);
         return;
       }
@@ -231,10 +260,57 @@ export default function Colleges() {
     ];
   }, [colleges]);
 
+  const programsByCollege = useMemo(() => {
+    const groupedPrograms = {};
+
+    programs.forEach((program) => {
+      const collegeId = program.college_id;
+
+      if (
+        collegeId === null ||
+        collegeId === undefined
+      ) {
+        return;
+      }
+
+      if (!groupedPrograms[collegeId]) {
+        groupedPrograms[collegeId] = [];
+      }
+
+      if (program.program_name) {
+        groupedPrograms[collegeId].push(
+          program.program_name
+        );
+      }
+    });
+
+    return groupedPrograms;
+  }, [programs]);
+
+  const handleSearchChange = (event) => {
+    const value = event.target.value;
+
+    setSearch(value);
+
+    const trimmedValue = value.trim();
+
+    if (trimmedValue) {
+      setSearchParams(
+        { search: trimmedValue },
+        { replace: true }
+      );
+    } else {
+      setSearchParams({}, { replace: true });
+    }
+  };
+
   const filteredColleges = useMemo(() => {
     const query = search.trim().toLowerCase();
 
     return colleges.filter((college) => {
+      const collegePrograms =
+        programsByCollege[college.id] || [];
+
       const searchableText = [
         college.name,
         college.city,
@@ -243,6 +319,8 @@ export default function Colleges() {
         college.institution_type,
         college.ownership,
         college.affiliation,
+        college.category,
+        ...collegePrograms,
       ]
         .filter(Boolean)
         .join(" ")
@@ -273,6 +351,7 @@ export default function Colleges() {
     });
   }, [
     colleges,
+    programsByCollege,
     search,
     stateFilter,
     ownershipFilter,
@@ -337,9 +416,7 @@ export default function Colleges() {
           <input
             type="text"
             value={search}
-            onChange={(event) => {
-              setSearch(event.target.value);
-            }}
+            onChange={handleSearchChange}
             placeholder="Search college, city, course..."
           />
         </div>
