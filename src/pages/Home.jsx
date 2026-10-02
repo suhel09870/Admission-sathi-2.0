@@ -1,6 +1,10 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Home() {
+  const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState("");
+
   const features = [
     {
       icon: "🏫",
@@ -24,7 +28,7 @@ export default function Home() {
       icon: "🎯",
       title: "College Predictor",
       text: "Explore possible college options based on your profile.",
-      link: "/predictor",
+      link: "/colleges",
     },
     {
       icon: "📝",
@@ -42,15 +46,59 @@ export default function Home() {
       icon: "🤖",
       title: "AI Admission Saathi",
       text: "Get personalized guidance throughout your admission journey.",
-      link: "/ai",
+      link: "/courses",
     },
     {
       icon: "🔔",
       title: "Admission Alerts",
       text: "Stay updated with important admission announcements.",
-      link: "/alerts",
+      link: "/exams",
     },
   ];
+
+  const handleSearch = () => {
+    const query = searchQuery.trim().toLowerCase();
+
+    if (!query) {
+      navigate("/colleges");
+      return;
+    }
+
+    if (
+      query.includes("course") ||
+      query.includes("btech") ||
+      query.includes("b.tech") ||
+      query.includes("engineering") ||
+      query.includes("mba") ||
+      query.includes("bba") ||
+      query.includes("bca") ||
+      query.includes("mbbs") ||
+      query.includes("law")
+    ) {
+      navigate(`/courses?search=${encodeURIComponent(searchQuery.trim())}`);
+      return;
+    }
+
+    if (
+      query.includes("exam") ||
+      query.includes("jee") ||
+      query.includes("neet") ||
+      query.includes("cuet") ||
+      query.includes("gate") ||
+      query.includes("cat")
+    ) {
+      navigate(`/exams?search=${encodeURIComponent(searchQuery.trim())}`);
+      return;
+    }
+
+    navigate(`/colleges?search=${encodeURIComponent(searchQuery.trim())}`);
+  };
+
+  const handleSearchKeyDown = (event) => {
+    if (event.key === "Enter") {
+      handleSearch();
+    }
+  };
 
   return (
     <main className="home-page">
@@ -78,16 +126,22 @@ export default function Home() {
 
             <input
               type="text"
+              value={searchQuery}
+              onChange={(event) => setSearchQuery(event.target.value)}
+              onKeyDown={handleSearchKeyDown}
               placeholder="Search colleges, courses or exams..."
+              aria-label="Search colleges, courses or exams"
             />
 
-            <button>Search</button>
+            <button type="button" onClick={handleSearch}>
+              Search
+            </button>
           </div>
 
           <div className="hero-actions">
             <Link to="/colleges">Explore Colleges →</Link>
             <Link to="/compare">Compare Colleges</Link>
-            <Link to="/predictor">College Predictor</Link>
+            <Link to="/colleges">College Predictor</Link>
           </div>
         </div>
 
@@ -121,20 +175,20 @@ export default function Home() {
       </section>
 
       <section className="trust-strip">
-        <div>
+        <Link to="/colleges" className="trust-strip-item">
           <strong>College discovery</strong>
           <span>Explore opportunities across India</span>
-        </div>
+        </Link>
 
-        <div>
+        <Link to="/compare" className="trust-strip-item">
           <strong>Smart comparison</strong>
           <span>Make informed decisions</span>
-        </div>
+        </Link>
 
-        <div>
+        <Link to="/courses" className="trust-strip-item">
           <strong>Admission guidance</strong>
           <span>Get help at every step</span>
-        </div>
+        </Link>
       </section>
 
       <section className="explore-section">
