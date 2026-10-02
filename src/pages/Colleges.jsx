@@ -10,7 +10,7 @@ export default function Colleges() {
   const [savedCollegeIds, setSavedCollegeIds] = useState(new Set());
 
   const [search, setSearch] = useState(
-    searchParams.get("search") || ""
+    () => searchParams.get("search") || ""
   );
 
   const [stateFilter, setStateFilter] =
@@ -26,18 +26,6 @@ export default function Colleges() {
   const [error, setError] = useState("");
   const [savingCollegeId, setSavingCollegeId] =
     useState(null);
-
-  useEffect(() => {
-    const urlSearch = searchParams.get("search") || "";
-
-    setSearch((previousSearch) => {
-      if (previousSearch === urlSearch) {
-        return previousSearch;
-      }
-
-      return urlSearch;
-    });
-  }, [searchParams]);
 
   useEffect(() => {
     async function loadColleges() {
