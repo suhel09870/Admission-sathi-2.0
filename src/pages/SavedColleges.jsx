@@ -128,7 +128,7 @@ export default function SavedColleges() {
 
   if (loading) {
     return (
-      <main className="colleges-page">
+      <main className="colleges-page saved-colleges-page">
         <section className="college-hero">
           <span className="page-eyebrow">
             SAVED COLLEGES
