@@ -632,12 +632,17 @@ function App() {
         <Route
           path="/courses"
           element={<Courses />}
-        />
+         />
 
-        <Route
+         <Route
           path="/courses/:category"
           element={<CourseDetail />}
-        />
+         />
+
+         <Route
+           path="/courses/:category/:course"
+           element={<CourseDetail />}
+         />
 
         <Route
           path="/exams"
