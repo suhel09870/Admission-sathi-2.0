@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "../lib/supabase";
@@ -19,9 +20,7 @@ export default function SavedColleges() {
       } = await supabase.auth.getUser();
 
       if (userError || !user) {
-        setError(
-          "Please log in to view your saved colleges."
-        );
+        setError("Please log in to view your saved colleges.");
         setLoading(false);
         return;
       }
@@ -105,12 +104,11 @@ export default function SavedColleges() {
       return;
     }
 
-    const { error: removeError } =
-      await supabase
-        .from("saved_colleges")
-        .delete()
-        .eq("user_id", user.id)
-        .eq("college_id", collegeId);
+    const { error: removeError } = await supabase
+      .from("saved_colleges")
+      .delete()
+      .eq("user_id", user.id)
+      .eq("college_id", collegeId);
 
     if (removeError) {
       console.error(removeError);
@@ -163,51 +161,22 @@ export default function SavedColleges() {
           </p>
         </div>
 
-        <div
-          style={{
-            fontSize: "14px",
-            fontWeight: "700",
-            color: "#111827",
-          }}
-        >
+        <div className="saved-colleges-count">
           {colleges.length} saved
         </div>
       </section>
 
       <section className="college-content">
-        <div
-          className="college-results"
-          style={{
-            width: "100%",
-          }}
-        >
+        <div className="college-results saved-colleges-results">
           {error && (
-            <p
-              style={{
-                color: "#dc2626",
-                background: "#fef2f2",
-                padding: "12px 14px",
-                borderRadius: "10px",
-                marginBottom: "20px",
-              }}
-            >
+            <p className="saved-colleges-error">
               {error}
             </p>
           )}
 
           {colleges.length === 0 ? (
-            <div
-              className="no-results"
-              style={{
-                padding: "70px 25px",
-              }}
-            >
-              <div
-                style={{
-                  fontSize: "42px",
-                  marginBottom: "15px",
-                }}
-              >
+            <div className="no-results saved-colleges-empty">
+              <div className="saved-colleges-empty-icon">
                 ♡
               </div>
 
@@ -220,11 +189,7 @@ export default function SavedColleges() {
 
               <Link
                 to="/colleges"
-                className="view-college"
-                style={{
-                  display: "inline-block",
-                  marginTop: "15px",
-                }}
+                className="view-college saved-colleges-explore"
               >
                 Explore Colleges →
               </Link>
@@ -247,7 +212,7 @@ export default function SavedColleges() {
               <div className="college-list">
                 {colleges.map((college) => (
                   <article
-                    className="college-card"
+                    className="college-card saved-colleges-card"
                     key={college.id}
                   >
                     <div className="college-logo">
@@ -270,8 +235,7 @@ export default function SavedColleges() {
                       <h3>{college.name}</h3>
 
                       <p className="college-location">
-                        📍{" "}
-                        {college.city || "India"}
+                        📍 {college.city || "India"}
                         {college.state
                           ? ", " + college.state
                           : ""}
@@ -296,31 +260,13 @@ export default function SavedColleges() {
                     <div className="college-actions">
                       <button
                         type="button"
+                        className="saved-college-remove"
                         onClick={() =>
                           removeCollege(college.id)
                         }
                         disabled={
                           removingId === college.id
                         }
-                        style={{
-                          border:
-                            "1px solid #e5e7eb",
-                          background: "#fff",
-                          color: "#dc2626",
-                          borderRadius: "10px",
-                          padding: "10px 14px",
-                          cursor:
-                            removingId ===
-                            college.id
-                              ? "not-allowed"
-                              : "pointer",
-                          fontWeight: "700",
-                          opacity:
-                            removingId ===
-                            college.id
-                              ? 0.6
-                              : 1,
-                        }}
                       >
                         {removingId === college.id
                           ? "Removing..."
@@ -328,10 +274,7 @@ export default function SavedColleges() {
                       </button>
 
                       <Link
-                        to={
-                          "/colleges/" +
-                          college.id
-                        }
+                        to={`/colleges/${college.id}`}
                         className="view-college"
                       >
                         View College →
