@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -56,26 +57,74 @@ export default function Home() {
     },
   ];
 
+  const courseSearchMap = {
+    bca: "bca",
+    "b.tech": "btech",
+    btech: "btech",
+    "b.tech computer science": "btech-computer-science",
+    "b.tech information technology": "btech-information-technology",
+    "b.sc computer science": "bsc-computer-science",
+    mca: "mca",
+    "m.sc computer science": "msc-computer-science",
+    bba: "bba",
+    mba: "mba",
+    mbbs: "mbbs",
+    bds: "bds",
+    "b.pharm": "bpharm",
+    llb: "llb",
+    "ba llb": "ba-llb",
+    "bba llb": "bba-llb",
+    "b.com": "bcom",
+    "b.com llb": "bcom-llb",
+    bms: "bms",
+    pgdm: "pgdm",
+  };
+
   const handleSearch = () => {
-    const query = searchQuery.trim().toLowerCase();
+    const originalQuery = searchQuery.trim();
+    const query = originalQuery.toLowerCase();
 
     if (!query) {
       navigate("/colleges");
       return;
     }
 
+    const exactCourseSlug = courseSearchMap[query];
+
+    if (exactCourseSlug) {
+      navigate(`/courses/${exactCourseSlug}`);
+      return;
+    }
+
     if (
-      query.includes("course") ||
-      query.includes("btech") ||
-      query.includes("b.tech") ||
-      query.includes("engineering") ||
-      query.includes("mba") ||
-      query.includes("bba") ||
-      query.includes("bca") ||
-      query.includes("mbbs") ||
-      query.includes("law")
+      query === "computer & it" ||
+      query === "computer and it" ||
+      query === "computer" ||
+      query === "it" ||
+      query === "technology"
     ) {
-      navigate(`/courses?search=${encodeURIComponent(searchQuery.trim())}`);
+      navigate("/courses/Computer%20%26%20IT");
+      return;
+    }
+
+    if (
+      query === "medical" ||
+      query === "medical & health" ||
+      query === "medical and health" ||
+      query === "health"
+    ) {
+      navigate("/courses/Medical%20%26%20Health");
+      return;
+    }
+
+    if (
+      query === "law" ||
+      query === "management" ||
+      query === "science" ||
+      query === "arts" ||
+      query === "arts & humanities"
+    ) {
+      navigate(`/courses/${encodeURIComponent(originalQuery)}`);
       return;
     }
 
@@ -87,11 +136,15 @@ export default function Home() {
       query.includes("gate") ||
       query.includes("cat")
     ) {
-      navigate(`/exams?search=${encodeURIComponent(searchQuery.trim())}`);
+      navigate(
+        `/exams?search=${encodeURIComponent(originalQuery)}`
+      );
       return;
     }
 
-    navigate(`/colleges?search=${encodeURIComponent(searchQuery.trim())}`);
+    navigate(
+      `/colleges?search=${encodeURIComponent(originalQuery)}`
+    );
   };
 
   const handleSearchKeyDown = (event) => {
@@ -127,21 +180,34 @@ export default function Home() {
             <input
               type="text"
               value={searchQuery}
-              onChange={(event) => setSearchQuery(event.target.value)}
+              onChange={(event) =>
+                setSearchQuery(event.target.value)
+              }
               onKeyDown={handleSearchKeyDown}
               placeholder="Search colleges, courses or exams..."
               aria-label="Search colleges, courses or exams"
             />
 
-            <button type="button" onClick={handleSearch}>
+            <button
+              type="button"
+              onClick={handleSearch}
+            >
               Search
             </button>
           </div>
 
           <div className="hero-actions">
-            <Link to="/colleges">Explore Colleges →</Link>
-            <Link to="/compare">Compare Colleges</Link>
-            <Link to="/colleges">College Predictor</Link>
+            <Link to="/colleges">
+              Explore Colleges →
+            </Link>
+
+            <Link to="/compare">
+              Compare Colleges
+            </Link>
+
+            <Link to="/colleges">
+              College Predictor
+            </Link>
           </div>
         </div>
 
@@ -157,9 +223,13 @@ export default function Home() {
 
             <div className="hero-card-icon">🎓</div>
 
-            <h3>Your college journey starts here.</h3>
+            <h3>
+              Your college journey starts here.
+            </h3>
 
-            <p>Search. Compare. Discover. Decide.</p>
+            <p>
+              Search. Compare. Discover. Decide.
+            </p>
           </div>
 
           <div className="hero-floating-card floating-top">
@@ -175,25 +245,42 @@ export default function Home() {
       </section>
 
       <section className="trust-strip">
-        <Link to="/colleges" className="trust-strip-item">
+        <Link
+          to="/colleges"
+          className="trust-strip-item"
+        >
           <strong>College discovery</strong>
-          <span>Explore opportunities across India</span>
+          <span>
+            Explore opportunities across India
+          </span>
         </Link>
 
-        <Link to="/compare" className="trust-strip-item">
+        <Link
+          to="/compare"
+          className="trust-strip-item"
+        >
           <strong>Smart comparison</strong>
-          <span>Make informed decisions</span>
+          <span>
+            Make informed decisions
+          </span>
         </Link>
 
-        <Link to="/courses" className="trust-strip-item">
+        <Link
+          to="/courses"
+          className="trust-strip-item"
+        >
           <strong>Admission guidance</strong>
-          <span>Get help at every step</span>
+          <span>
+            Get help at every step
+          </span>
         </Link>
       </section>
 
       <section className="explore-section">
         <div className="section-heading">
-          <span>EXPLORE ADMISSION SAATHI</span>
+          <span>
+            EXPLORE ADMISSION SAATHI
+          </span>
 
           <h2>
             Everything you need,
@@ -202,8 +289,9 @@ export default function Home() {
           </h2>
 
           <p>
-            From discovering a college to planning your admission journey,
-            find the tools you need without the confusion.
+            From discovering a college to planning your
+            admission journey, find the tools you need
+            without the confusion.
           </p>
         </div>
 
@@ -214,13 +302,17 @@ export default function Home() {
               className="feature-card"
               key={feature.title}
             >
-              <div className="feature-icon">{feature.icon}</div>
+              <div className="feature-icon">
+                {feature.icon}
+              </div>
 
               <h3>{feature.title}</h3>
 
               <p>{feature.text}</p>
 
-              <span className="feature-arrow">↗</span>
+              <span className="feature-arrow">
+                ↗
+              </span>
             </Link>
           ))}
         </div>
