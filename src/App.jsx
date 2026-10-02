@@ -634,14 +634,14 @@ function App() {
           element={<Courses />}
          />
 
-         <Route
-          path="/courses/:category"
-          element={<CourseDetail />}
+        <Route
+         path="/courses/:category/:course"
+         element={<CourseDetail />}
          />
 
          <Route
-           path="/courses/:category/:course"
-           element={<CourseDetail />}
+         path="/courses/:category"
+         element={<CourseDetail />}
          />
 
         <Route
