@@ -5,56 +5,54 @@ import { Link, useNavigate } from "react-router-dom";
 export default function Home() {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
+  const [college, setCollege] = useState("");
+  const [course, setCourse] = useState("");
+  const [location, setLocation] = useState("");
 
   const features = [
     {
-      icon: "🏫",
-      title: "Find Colleges",
-      text: "Explore colleges and universities across India.",
+      icon: "▦",
+      title: "Colleges",
+      text: "Explore top colleges, compare and find your best fit.",
       link: "/colleges",
+      color: "green",
     },
     {
-      icon: "📚",
-      title: "Explore Courses",
-      text: "Discover courses and understand your career options.",
+      icon: "▤",
+      title: "Courses",
+      text: "Discover courses, check eligibility and duration.",
       link: "/courses",
+      color: "blue",
     },
     {
-      icon: "⚖️",
-      title: "Compare Colleges",
-      text: "Compare colleges on the factors that matter to you.",
-      link: "/compare",
-    },
-    {
-      icon: "🎯",
-      title: "College Predictor",
-      text: "Explore possible college options based on your profile.",
-      link: "/colleges",
-    },
-    {
-      icon: "📝",
-      title: "Entrance Exams",
-      text: "Discover entrance exams and important admission information.",
+      icon: "◷",
+      title: "Exams",
+      text: "Stay updated with exam dates, patterns and notifications.",
       link: "/exams",
+      color: "orange",
     },
     {
-      icon: "🎓",
+      icon: "✧",
       title: "Scholarships",
-      text: "Explore scholarship opportunities for students.",
+      text: "Find the best scholarships and save on your education.",
       link: "/scholarships",
+      color: "pink",
     },
     {
-      icon: "🤖",
-      title: "AI Admission Saathi",
-      text: "Get personalized guidance throughout your admission journey.",
-      link: "/courses",
+      icon: "⇄",
+      title: "Compare",
+      text: "Compare colleges, courses and make informed choices.",
+      link: "/compare",
+      color: "purple",
     },
-    {
-      icon: "🔔",
-      title: "Admission Alerts",
-      text: "Stay updated with important admission announcements.",
-      link: "/exams",
-    },
+  ];
+
+  const highlights = [
+    { icon: "✓", title: "Verified Colleges", text: "Only trusted & verified info" },
+    { icon: "▤", title: "Multiple Courses", text: "Find the right course for you" },
+    { icon: "◷", title: "Exam Details", text: "Dates, patterns & updates" },
+    { icon: "✧", title: "Scholarships", text: "Get financial support" },
+    { icon: "⇄", title: "Compare Options", text: "Make better decisions" },
   ];
 
   const courseSearchMap = {
@@ -81,7 +79,9 @@ export default function Home() {
   };
 
   const handleSearch = () => {
-    const originalQuery = searchQuery.trim();
+    const selectedSearch = searchQuery.trim() || course ||
+      [college, location].filter(Boolean).join(" ");
+    const originalQuery = selectedSearch.trim();
     const query = originalQuery.toLowerCase();
 
     if (!query) {
@@ -149,173 +149,143 @@ export default function Home() {
 
   const handleSearchKeyDown = (event) => {
     if (event.key === "Enter") {
+      event.preventDefault();
       handleSearch();
     }
   };
 
   return (
     <main className="home-page">
-      <section className="hero-section">
-        <div className="hero-content">
-          <div className="hero-badge">
-            <span>✦</span>
-            Your smarter admission journey
-          </div>
-
-          <h1>
-            Find the right
-            <span> college.</span>
-            <br />
-            Build your future.
-          </h1>
-
-          <p className="hero-description">
-            Discover colleges, courses, entrance exams, scholarships and
-            admission opportunities — all in one simple place.
+      <section className="home-hero">
+        <div className="home-hero-copy">
+          <span className="home-hero-badge"><i></i>Your Future Starts Here</span>
+          <h1>Find Your Perfect<br /><span>College &amp; Course</span></h1>
+          <p className="home-hero-description">
+            Discover top colleges, explore courses, check exams and scholarships – all in one place.
           </p>
 
-          <div className="hero-search">
-            <span className="search-icon">⌕</span>
+          <form
+            className="home-search"
+            onSubmit={(event) => {
+              event.preventDefault();
+              handleSearch();
+            }}
+          >
+            <label>
+              <span>Select College</span>
+              <select value={college} onChange={(event) => setCollege(event.target.value)}>
+                <option value="">Any college type</option>
+                <option value="Engineering">Engineering</option>
+                <option value="Medical">Medical</option>
+                <option value="Management">Management</option>
+                <option value="Science">Science</option>
+                <option value="Arts & Humanities">Arts &amp; Humanities</option>
+              </select>
+            </label>
+            <label>
+              <span>Select Course</span>
+              <select value={course} onChange={(event) => setCourse(event.target.value)}>
+                <option value="">Any course</option>
+                <option value="bca">BCA</option>
+                <option value="b.tech">B.Tech</option>
+                <option value="bba">BBA</option>
+                <option value="mba">MBA</option>
+                <option value="mbbs">MBBS</option>
+                <option value="llb">LLB</option>
+              </select>
+            </label>
+            <label>
+              <span>Select Location</span>
+              <select value={location} onChange={(event) => setLocation(event.target.value)}>
+                <option value="">Anywhere in India</option>
+                <option value="New Delhi">New Delhi</option>
+                <option value="Mumbai">Mumbai</option>
+                <option value="Bengaluru">Bengaluru</option>
+                <option value="Chennai">Chennai</option>
+                <option value="Hyderabad">Hyderabad</option>
+                <option value="Pune">Pune</option>
+              </select>
+            </label>
+            <label className="home-keyword-search">
+              <span>Search by keyword</span>
+              <input
+                type="search"
+                value={searchQuery}
+                onChange={(event) => setSearchQuery(event.target.value)}
+                onKeyDown={handleSearchKeyDown}
+                placeholder="College, course or exam"
+                aria-label="Search colleges, courses or exams"
+              />
+            </label>
+            <button type="submit" className="home-search-button">Search <span>→</span></button>
+          </form>
 
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(event) =>
-                setSearchQuery(event.target.value)
-              }
-              onKeyDown={handleSearchKeyDown}
-              placeholder="Search colleges, courses or exams..."
-              aria-label="Search colleges, courses or exams"
-            />
-
-            <button
-              type="button"
-              onClick={handleSearch}
-            >
-              Search
-            </button>
-          </div>
-
-          <div className="hero-actions">
-            <Link to="/colleges">
-              Explore Colleges →
-            </Link>
-
-            <Link to="/compare">
-              Compare Colleges
-            </Link>
-
-            <Link to="/colleges">
-              College Predictor
-            </Link>
+          <div className="home-hero-actions">
+            <Link to="/colleges" className="home-primary-action">Explore Colleges <span>→</span></Link>
+            <Link to="/courses" className="home-secondary-action">Explore Courses</Link>
           </div>
         </div>
 
-        <div className="hero-visual">
-          <div className="hero-orbit orbit-one"></div>
-          <div className="hero-orbit orbit-two"></div>
-
-          <div className="hero-main-card">
-            <div className="hero-card-top">
-              <span>ADMISSION SAATHI</span>
-              <span>2026</span>
-            </div>
-
-            <div className="hero-card-icon">🎓</div>
-
-            <h3>
-              Your college journey starts here.
-            </h3>
-
-            <p>
-              Search. Compare. Discover. Decide.
-            </p>
+        <div className="home-hero-art" aria-hidden="true">
+          <div className="home-art-sun"></div>
+          <div className="home-art-campus">
+            <div className="home-campus-roof"></div>
+            <div className="home-campus-columns"><i></i><i></i><i></i></div>
+            <div className="home-campus-base"></div>
           </div>
-
-          <div className="hero-floating-card floating-top">
-            <strong>10K+</strong>
-            <span>Colleges</span>
+          <div className="home-art-student">
+            <div className="home-student-head"><i></i></div>
+            <div className="home-student-neck"></div>
+            <div className="home-student-body"></div>
+            <div className="home-student-arm"></div>
+            <div className="home-student-book">A</div>
           </div>
-
-          <div className="hero-floating-card floating-bottom">
-            <strong>500+</strong>
-            <span>Courses</span>
-          </div>
+          <div className="home-art-leaf leaf-one"></div>
+          <div className="home-art-leaf leaf-two"></div>
+          <div className="home-art-card home-art-card-top"><span>✦</span><div><strong>Make your next move</strong><small>One step at a time</small></div></div>
+          <div className="home-art-card home-art-card-bottom"><span>✓</span><div><strong>Find your fit</strong><small>Explore new possibilities</small></div></div>
         </div>
       </section>
 
-      <section className="trust-strip">
-        <Link
-          to="/colleges"
-          className="trust-strip-item"
-        >
-          <strong>College discovery</strong>
-          <span>
-            Explore opportunities across India
-          </span>
-        </Link>
-
-        <Link
-          to="/compare"
-          className="trust-strip-item"
-        >
-          <strong>Smart comparison</strong>
-          <span>
-            Make informed decisions
-          </span>
-        </Link>
-
-        <Link
-          to="/courses"
-          className="trust-strip-item"
-        >
-          <strong>Admission guidance</strong>
-          <span>
-            Get help at every step
-          </span>
-        </Link>
+      <section className="home-highlights" aria-label="Admission Sathi features">
+        {highlights.map((highlight) => (
+          <div className="home-highlight" key={highlight.title}>
+            <span className="home-highlight-icon">{highlight.icon}</span>
+            <div><strong>{highlight.title}</strong><small>{highlight.text}</small></div>
+          </div>
+        ))}
       </section>
 
-      <section className="explore-section">
-        <div className="section-heading">
-          <span>
-            EXPLORE ADMISSION SAATHI
-          </span>
-
-          <h2>
-            Everything you need,
-            <br />
-            in one place.
-          </h2>
-
-          <p>
-            From discovering a college to planning your
-            admission journey, find the tools you need
-            without the confusion.
-          </p>
+      <section className="home-explore">
+        <div className="home-section-heading">
+          <span className="home-eyebrow">YOUR NEXT STEP STARTS HERE</span>
+          <h2>Find What You’re Looking For</h2>
+          <p>Everything you need for your higher education journey,<br className="desktop-break" /> right at your fingertips.</p>
         </div>
 
-        <div className="feature-grid">
+        <div className="home-card-grid">
           {features.map((feature) => (
             <Link
               to={feature.link}
-              className="feature-card"
+              className="home-explore-card"
               key={feature.title}
             >
-              <div className="feature-icon">
+              <span className={`home-card-icon ${feature.color}`}>
                 {feature.icon}
-              </div>
-
-              <h3>{feature.title}</h3>
-
-              <p>{feature.text}</p>
-
-              <span className="feature-arrow">
-                ↗
               </span>
+              <h3>{feature.title}</h3>
+              <p>{feature.text}</p>
+              <span className="home-card-arrow" aria-hidden="true">↗</span>
             </Link>
           ))}
         </div>
+      </section>
+
+      <section className="home-statistics" aria-label="Admission Sathi statistics">
+        <div><strong>10K+</strong><span>Verified Colleges</span></div>
+        <div><strong>500+</strong><span>Courses</span></div>
+        <div><strong>50+</strong><span>Exams</span></div>
+        <div><strong>20+</strong><span>Scholarships</span></div>
       </section>
     </main>
   );

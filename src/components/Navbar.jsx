@@ -1,16 +1,17 @@
 
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const isHome = useLocation().pathname === "/";
 
   const closeMenu = () => {
     setMenuOpen(false);
   };
 
   return (
-    <header className="site-header">
+    <header className={`site-header${isHome ? " home-header" : ""}`}>
       <Link to="/" className="site-brand" onClick={closeMenu}>
         <span className="brand-mark">A+S</span>
 
@@ -21,6 +22,7 @@ export default function Navbar() {
       </Link>
 
       <nav className="site-nav">
+        {isHome && <Link to="/" aria-current="page">Home</Link>}
         <Link to="/colleges">Colleges</Link>
         <Link to="/courses">Courses</Link>
         <Link to="/exams">Exams</Link>
@@ -51,6 +53,7 @@ export default function Navbar() {
       </button>
 
       <div className={`mobile-menu ${menuOpen ? "open" : ""}`}>
+        {isHome && <Link to="/" onClick={closeMenu}>Home</Link>}
         <Link to="/colleges" onClick={closeMenu}>
           Colleges
         </Link>
