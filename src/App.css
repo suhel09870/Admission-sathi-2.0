@@ -5421,3 +5421,71 @@ a {
     bottom: 17px;
   }
 }
+
+/* =========================================================
+   PHASE 17 - MOBILE TRUST STRIP
+========================================================= */
+
+@media (max-width: 900px) {
+  .trust-strip {
+    width: calc(100% - 24px);
+    margin: 30px auto 0;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+
+  .trust-strip-item {
+    padding: 16px 12px;
+  }
+
+  .trust-strip-item strong {
+    font-size: 13px;
+    line-height: 1.3;
+  }
+
+  .trust-strip-item span {
+    font-size: 11px;
+    line-height: 1.45;
+  }
+}
+
+@media (max-width: 600px) {
+  .trust-strip {
+    width: calc(100% - 20px);
+    margin-top: 24px;
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .trust-strip-item {
+    padding: 16px 18px;
+  }
+
+  .trust-strip-item strong {
+    font-size: 14px;
+  }
+
+  .trust-strip-item span {
+    font-size: 12px;
+  }
+}
+
+/* PHASE 17 - MOBILE TRUST STRIP */
+
+@media (max-width: 900px) {
+  .trust-strip {
+    width: calc(100% - 24px);
+    margin: 30px auto 0;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+}
+
+@media (max-width: 600px) {
+  .trust-strip {
+    width: calc(100% - 20px);
+    margin-top: 24px;
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+}
