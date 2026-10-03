@@ -3,21 +3,15 @@ import { Link } from "react-router-dom";
 export default function Navbar() {
   return (
     <header className="site-header">
-      {/* BRAND */}
       <Link to="/" className="site-brand">
-        <span className="brand-logo">
-          <span className="brand-a">A</span>
-          <span className="brand-plus">+</span>
-          <span className="brand-s">S</span>
-        </span>
+        <span className="brand-mark">A+S</span>
 
-        <span className="brand-copy">
+        <span className="brand-text">
           <strong>Admission Saathi</strong>
-          <span>Your journey. Your future.</span>
+          <small>Your journey. Your future.</small>
         </span>
       </Link>
 
-      {/* CENTER NAV */}
       <nav className="site-nav">
         <Link to="/colleges">Colleges</Link>
         <Link to="/courses">Courses</Link>
@@ -26,8 +20,7 @@ export default function Navbar() {
         <Link to="/compare">Compare</Link>
       </nav>
 
-      {/* AUTH */}
-      <div className="header-auth">
+      <div className="auth-links">
         <Link to="/login" className="login-link">
           Login
         </Link>
