@@ -31,64 +31,278 @@ a {
   min-height: 100vh;
 }
 
-/* =========================
-   NAVBAR
-========================= */
+/* =========================================================
+   ADMISSION SAATHI - PREMIUM NAVBAR
+========================================================= */
 
 .site-header {
   width: min(1180px, calc(100% - 40px));
-  height: 82px;
+  min-height: 92px;
   margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 30px;
+  gap: 24px;
+  position: relative;
+  z-index: 50;
 }
 
+/* =========================
+   BRAND
+========================= */
+
 .site-brand {
-  display: flex;
-  flex-direction: column;
-  color: #111827;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
   flex-shrink: 0;
 }
 
-.site-brand strong {
-  font-size: 16px;
-  font-weight: 800;
-  line-height: 1.2;
+.brand-logo {
+  width: 48px;
+  height: 48px;
+  border-radius: 15px;
+  background: #111827;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  box-shadow: 0 8px 20px rgba(17, 24, 39, 0.14);
+  transform: rotate(-3deg);
 }
 
-.site-brand span {
-  color: #8a91a1;
-  font-size: 11px;
-  margin-top: 3px;
+.brand-a {
+  color: #ffffff;
+  font-size: 19px;
+  font-weight: 950;
+  line-height: 1;
+  position: relative;
+  z-index: 2;
 }
+
+.brand-plus {
+  color: #a8f276;
+  font-size: 15px;
+  font-weight: 950;
+  margin: -10px -2px 0 -1px;
+  position: relative;
+  z-index: 3;
+}
+
+.brand-s {
+  color: #a8f276;
+  font-size: 20px;
+  font-weight: 950;
+  line-height: 1;
+  position: relative;
+  z-index: 1;
+}
+
+.brand-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.brand-copy strong {
+  color: #111827;
+  font-size: 17px;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.4px;
+  white-space: nowrap;
+}
+
+.brand-copy span {
+  color: #7b8494;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+}
+
+/* =========================
+   NAVIGATION PILL
+========================= */
 
 .site-nav {
   display: flex;
   align-items: center;
-  gap: 30px;
+  gap: 4px;
+  padding: 6px;
+  background: #ffffff;
+  border: 1px solid #e8ebf0;
+  border-radius: 16px;
+  box-shadow: 0 8px 25px rgba(17, 24, 39, 0.06);
 }
 
 .site-nav a {
-  color: #5f6675;
-  font-size: 14px;
-  font-weight: 600;
-  transition: color 0.2s ease;
+  color: #4c5566;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 750;
+  padding: 9px 13px;
+  border-radius: 11px;
+  white-space: nowrap;
+  transition: all 0.2s ease;
 }
 
 .site-nav a:hover {
+  background: #f0f8e9;
   color: #111827;
+  transform: translateY(-1px);
 }
 
-.site-nav .login-link {
-  border: 1px solid #e3e6ed;
-  background: white;
-  color: #111827;
-  padding: 10px 19px;
-  border-radius: 10px;
-  font-weight: 700;
+/* =========================
+   AUTH BUTTONS
+========================= */
+
+.header-auth {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
 }
+
+.login-link {
+  color: #111827;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 800;
+  padding: 10px 12px;
+  white-space: nowrap;
+  transition: 0.2s ease;
+}
+
+.login-link:hover {
+  color: #6b7280;
+}
+
+.signup-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #111827;
+  background: #a8f276;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 900;
+  padding: 11px 15px;
+  border-radius: 12px;
+  white-space: nowrap;
+  box-shadow: 0 6px 16px rgba(168, 242, 118, 0.22);
+  transition: all 0.2s ease;
+}
+
+.signup-link span {
+  font-size: 15px;
+  line-height: 1;
+  transition: transform 0.2s ease;
+}
+
+.signup-link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgba(168, 242, 118, 0.3);
+}
+
+.signup-link:hover span {
+  transform: translateX(3px);
+}
+
+/* =========================
+   TABLET
+========================= */
+
+@media (max-width: 1000px) {
+  .site-header {
+    width: calc(100% - 28px);
+    gap: 14px;
+  }
+
+  .site-nav {
+    gap: 2px;
+  }
+
+  .site-nav a {
+    padding: 8px 9px;
+    font-size: 12px;
+  }
+
+  .brand-copy strong {
+    font-size: 15px;
+  }
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 720px) {
+  .site-header {
+    width: calc(100% - 24px);
+    min-height: 76px;
+    padding: 10px 0;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .brand-logo {
+    width: 43px;
+    height: 43px;
+    border-radius: 13px;
+  }
+
+  .brand-a {
+    font-size: 17px;
+  }
+
+  .brand-s {
+    font-size: 18px;
+  }
+
+  .brand-copy strong {
+    font-size: 14px;
+  }
+
+  .brand-copy span {
+    font-size: 9px;
+  }
+
+  .header-auth {
+    margin-left: auto;
+  }
+
+  .login-link {
+    padding: 8px 6px;
+    font-size: 12px;
+  }
+
+  .signup-link {
+    padding: 9px 11px;
+    font-size: 11px;
+  }
+
+  .site-nav {
+    order: 3;
+    width: 100%;
+    justify-content: flex-start;
+    overflow-x: auto;
+    padding: 5px;
+    gap: 3px;
+    scrollbar-width: none;
+  }
+
+  .site-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .site-nav a {
+    font-size: 11px;
+    padding: 8px 11px;
+  }
+}
+
 
 /* =========================
    HERO
