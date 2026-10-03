@@ -1,9 +1,17 @@
+
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 export default function Navbar() {
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const closeMenu = () => {
+    setMenuOpen(false);
+  };
+
   return (
     <header className="site-header">
-      <Link to="/" className="site-brand">
+      <Link to="/" className="site-brand" onClick={closeMenu}>
         <span className="brand-mark">A+S</span>
 
         <span className="brand-text">
@@ -26,6 +34,50 @@ export default function Navbar() {
         </Link>
 
         <Link to="/signup" className="signup-link">
+          Sign Up <span>→</span>
+        </Link>
+      </div>
+
+      <button
+        type="button"
+        className={`mobile-menu-button ${menuOpen ? "active" : ""}`}
+        onClick={() => setMenuOpen((prev) => !prev)}
+        aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
+        aria-expanded={menuOpen}
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <div className={`mobile-menu ${menuOpen ? "open" : ""}`}>
+        <Link to="/colleges" onClick={closeMenu}>
+          Colleges
+        </Link>
+
+        <Link to="/courses" onClick={closeMenu}>
+          Courses
+        </Link>
+
+        <Link to="/exams" onClick={closeMenu}>
+          Exams
+        </Link>
+
+        <Link to="/scholarships" onClick={closeMenu}>
+          Scholarships
+        </Link>
+
+        <Link to="/compare" onClick={closeMenu}>
+          Compare
+        </Link>
+
+        <div className="mobile-menu-divider"></div>
+
+        <Link to="/login" className="mobile-login" onClick={closeMenu}>
+          Login
+        </Link>
+
+        <Link to="/signup" className="mobile-signup" onClick={closeMenu}>
           Sign Up <span>→</span>
         </Link>
       </div>

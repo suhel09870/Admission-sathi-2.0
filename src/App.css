@@ -5124,3 +5124,134 @@ a {
     border-radius: 10px;
   }
 }
+
+/* =========================================================
+   MOBILE HAMBURGER NAVIGATION
+========================================================= */
+
+.mobile-menu-button {
+  display: none;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 11px;
+  background: #f3f5f7;
+  padding: 9px;
+  cursor: pointer;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.mobile-menu-button span {
+  display: block;
+  width: 19px;
+  height: 2px;
+  border-radius: 2px;
+  background: #111827;
+  transition: 0.2s ease;
+}
+
+.mobile-menu-button.active span:nth-child(1) {
+  transform: translateY(6px) rotate(45deg);
+}
+
+.mobile-menu-button.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.mobile-menu-button.active span:nth-child(3) {
+  transform: translateY(-6px) rotate(-45deg);
+}
+
+.mobile-menu {
+  display: none;
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 900px) {
+
+  .mobile-menu-button {
+    display: flex;
+  }
+
+  .mobile-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    right: 0;
+    padding: 14px;
+    background: #ffffff;
+    border: 1px solid #e8ebef;
+    border-radius: 18px;
+    box-shadow: 0 18px 45px rgba(17, 24, 39, 0.12);
+    z-index: 100;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .mobile-menu.open {
+    display: flex;
+  }
+
+  .mobile-menu a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 44px;
+    padding: 0 12px;
+    border-radius: 11px;
+    text-decoration: none;
+    color: #111827;
+    font-size: 13px;
+    font-weight: 750;
+  }
+
+  .mobile-menu a:hover {
+    background: #f5f7f8;
+  }
+
+  .mobile-menu-divider {
+    height: 1px;
+    background: #edf0f2;
+    margin: 8px 0;
+  }
+
+  .mobile-login {
+    justify-content: center !important;
+  }
+
+  .mobile-signup {
+    justify-content: center !important;
+    background: #111827;
+    color: #ffffff !important;
+    margin-top: 3px;
+  }
+
+  .mobile-signup span {
+    margin-left: 5px;
+  }
+}
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+  .mobile-menu-button {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+  }
+
+  .mobile-menu {
+    left: 0;
+    right: 0;
+    border-radius: 16px;
+  }
+}
