@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { supabase } from "../lib/supabase";
+import { isSupabaseConfigured, supabase } from "../lib/supabase";
 
 export default function Compare() {
   const [colleges, setColleges] = useState([]);
@@ -151,7 +151,7 @@ export default function Compare() {
           <div className="premium-compare-hero-stats">
             <div>
               <strong>{colleges.length || "—"}</strong>
-              <span>Verified colleges</span>
+              <span>{isSupabaseConfigured ? "Verified colleges" : "Sample colleges"}</span>
             </div>
 
             <div>
@@ -161,7 +161,7 @@ export default function Compare() {
 
             <div>
               <strong>✓</strong>
-              <span>Verified information</span>
+              <span>{isSupabaseConfigured ? "Verified information" : "Demo information"}</span>
             </div>
           </div>
         </div>
@@ -347,7 +347,7 @@ export default function Compare() {
 
               <div className="premium-verified-pill">
                 <span>✓</span>
-                Verified data
+                {isSupabaseConfigured ? "Verified data" : "Demo data"}
               </div>
             </div>
 

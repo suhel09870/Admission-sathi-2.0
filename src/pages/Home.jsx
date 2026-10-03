@@ -1,58 +1,120 @@
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import LineIcon from "../components/LineIcon";
+import Button from "../components/common/Button";
+import Card from "../components/common/Card";
+import StudentIllustration from "../components/illustrations/StudentIllustration";
+import BooksIllustration from "../components/illustrations/BooksIllustration";
+
+function useCountUp(target, enabled) {
+  const [value, setValue] = useState(0);
+
+  useEffect(() => {
+    if (!enabled) return undefined;
+
+    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) {
+      const frameId = requestAnimationFrame(() => setValue(target));
+      return () => cancelAnimationFrame(frameId);
+    }
+
+    let frameId;
+    const startTime = performance.now();
+
+    const update = (time) => {
+      const progress = Math.min((time - startTime) / 1100, 1);
+      const easedProgress = 1 - (1 - progress) ** 3;
+      setValue(Math.round(target * easedProgress));
+
+      if (progress < 1) {
+        frameId = requestAnimationFrame(update);
+      }
+    };
+
+    frameId = requestAnimationFrame(update);
+    return () => cancelAnimationFrame(frameId);
+  }, [enabled, target]);
+
+  return value;
+}
 
 export default function Home() {
   const navigate = useNavigate();
+  const statsRef = useRef(null);
+  const [statsVisible, setStatsVisible] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [college, setCollege] = useState("");
   const [course, setCourse] = useState("");
   const [location, setLocation] = useState("");
+  const collegeCount = useCountUp(100, statsVisible);
+  const courseCount = useCountUp(1000, statsVisible);
+  const examCount = useCountUp(50, statsVisible);
+  const scholarshipCount = useCountUp(20, statsVisible);
+
+  useEffect(() => {
+    const statsElement = statsRef.current;
+    if (!statsElement) return undefined;
+
+    if (!("IntersectionObserver" in window)) {
+      const frameId = requestAnimationFrame(() => setStatsVisible(true));
+      return () => cancelAnimationFrame(frameId);
+    }
+
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setStatsVisible(true);
+        observer.disconnect();
+      }
+    }, { threshold: 0.25 });
+
+    observer.observe(statsElement);
+    return () => observer.disconnect();
+  }, []);
 
   const features = [
     {
-      icon: "▦",
+      icon: "building",
       title: "Colleges",
       text: "Explore top colleges, compare and find your best fit.",
       link: "/colleges",
       color: "green",
     },
     {
-      icon: "▤",
+      icon: "book",
       title: "Courses",
       text: "Discover courses, check eligibility and duration.",
       link: "/courses",
       color: "blue",
     },
     {
-      icon: "◷",
+      icon: "file",
       title: "Exams",
       text: "Stay updated with exam dates, patterns and notifications.",
       link: "/exams",
-      color: "orange",
+      color: "purple",
     },
     {
-      icon: "✧",
+      icon: "award",
       title: "Scholarships",
       text: "Find the best scholarships and save on your education.",
       link: "/scholarships",
-      color: "pink",
+      color: "orange",
     },
     {
-      icon: "⇄",
+      icon: "scale",
       title: "Compare",
       text: "Compare colleges, courses and make informed choices.",
       link: "/compare",
-      color: "purple",
+      color: "teal",
     },
   ];
 
   const highlights = [
-    { icon: "✓", title: "Verified Colleges", text: "Only trusted & verified info" },
-    { icon: "▤", title: "Multiple Courses", text: "Find the right course for you" },
-    { icon: "◷", title: "Exam Details", text: "Dates, patterns & updates" },
-    { icon: "✧", title: "Scholarships", text: "Get financial support" },
-    { icon: "⇄", title: "Compare Options", text: "Make better decisions" },
+    { icon: "check", title: "Verified Colleges", text: "Only trusted & verified info" },
+    { icon: "book", title: "Multiple Courses", text: "Find the right course for you" },
+    { icon: "file", title: "Exam Details", text: "Dates, patterns & updates" },
+    { icon: "award", title: "Scholarships", text: "Get financial support" },
+    { icon: "scale", title: "Compare Options", text: "Make better decisions" },
   ];
 
   const courseSearchMap = {
@@ -79,9 +141,20 @@ export default function Home() {
   };
 
   const handleSearch = () => {
-    const selectedSearch = searchQuery.trim() || course ||
-      [college, location].filter(Boolean).join(" ");
-    const originalQuery = selectedSearch.trim();
+    const keyword = searchQuery.trim();
+
+    if (college || course || location) {
+      const filters = new URLSearchParams();
+      if (keyword) filters.set("search", keyword);
+      if (college) filters.set("college", college);
+      if (course) filters.set("course", course);
+      if (location) filters.set("location", location);
+      const route = course && !college && !location ? "/courses" : "/colleges";
+      navigate(`${route}?${filters.toString()}`);
+      return;
+    }
+
+    const originalQuery = keyword;
     const query = originalQuery.toLowerCase();
 
     if (!query) {
@@ -158,7 +231,7 @@ export default function Home() {
     <main className="home-page">
       <section className="home-hero">
         <div className="home-hero-copy">
-          <span className="home-hero-badge"><i></i>Your Future Starts Here</span>
+          <span className="home-hero-badge"><LineIcon name="graduation" size={16} />Your Future Starts Here</span>
           <h1>Find Your Perfect<br /><span>College &amp; Course</span></h1>
           <p className="home-hero-description">
             Discover top colleges, explore courses, check exams and scholarships – all in one place.
@@ -172,7 +245,7 @@ export default function Home() {
             }}
           >
             <label>
-              <span>Select College</span>
+              <span className="home-field-label"><LineIcon name="building" size={15} />Select College</span>
               <select value={college} onChange={(event) => setCollege(event.target.value)}>
                 <option value="">Any college type</option>
                 <option value="Engineering">Engineering</option>
@@ -183,7 +256,7 @@ export default function Home() {
               </select>
             </label>
             <label>
-              <span>Select Course</span>
+              <span className="home-field-label"><LineIcon name="book" size={15} />Select Course</span>
               <select value={course} onChange={(event) => setCourse(event.target.value)}>
                 <option value="">Any course</option>
                 <option value="bca">BCA</option>
@@ -195,7 +268,7 @@ export default function Home() {
               </select>
             </label>
             <label>
-              <span>Select Location</span>
+              <span className="home-field-label"><LineIcon name="pin" size={15} />Select Location</span>
               <select value={location} onChange={(event) => setLocation(event.target.value)}>
                 <option value="">Anywhere in India</option>
                 <option value="New Delhi">New Delhi</option>
@@ -217,75 +290,82 @@ export default function Home() {
                 aria-label="Search colleges, courses or exams"
               />
             </label>
-            <button type="submit" className="home-search-button">Search <span>→</span></button>
+            <Button type="submit" className="home-search-button"><LineIcon name="search" size={17} />Search</Button>
           </form>
 
           <div className="home-hero-actions">
-            <Link to="/colleges" className="home-primary-action">Explore Colleges <span>→</span></Link>
-            <Link to="/courses" className="home-secondary-action">Explore Courses</Link>
+            <Button to="/colleges" className="home-primary-action">Explore Colleges <LineIcon name="arrow" size={17} /></Button>
+            <Button to="/courses" variant="outline" className="home-secondary-action">Explore Courses</Button>
           </div>
         </div>
 
         <div className="home-hero-art" aria-hidden="true">
-          <div className="home-art-sun"></div>
-          <div className="home-art-campus">
-            <div className="home-campus-roof"></div>
-            <div className="home-campus-columns"><i></i><i></i><i></i></div>
-            <div className="home-campus-base"></div>
-          </div>
-          <div className="home-art-student">
-            <div className="home-student-head"><i></i></div>
-            <div className="home-student-neck"></div>
-            <div className="home-student-body"></div>
-            <div className="home-student-arm"></div>
-            <div className="home-student-book">A</div>
-          </div>
-          <div className="home-art-leaf leaf-one"></div>
-          <div className="home-art-leaf leaf-two"></div>
-          <div className="home-art-card home-art-card-top"><span>✦</span><div><strong>Make your next move</strong><small>One step at a time</small></div></div>
-          <div className="home-art-card home-art-card-bottom"><span>✓</span><div><strong>Find your fit</strong><small>Explore new possibilities</small></div></div>
+          <StudentIllustration />
         </div>
       </section>
 
       <section className="home-highlights" aria-label="Admission Sathi features">
         {highlights.map((highlight) => (
           <div className="home-highlight" key={highlight.title}>
-            <span className="home-highlight-icon">{highlight.icon}</span>
+            <span className="home-highlight-icon"><LineIcon name={highlight.icon} size={19} /></span>
             <div><strong>{highlight.title}</strong><small>{highlight.text}</small></div>
           </div>
         ))}
       </section>
 
       <section className="home-explore">
-        <div className="home-section-heading">
-          <span className="home-eyebrow">YOUR NEXT STEP STARTS HERE</span>
-          <h2>Find What You’re Looking For</h2>
-          <p>Everything you need for your higher education journey,<br className="desktop-break" /> right at your fingertips.</p>
+        <div className="home-section-heading-row">
+          <div className="home-section-heading">
+            <span className="home-eyebrow">EXPLORE</span>
+            <h2>Find What You’re Looking For</h2>
+            <p>Everything you need for your higher education journey,<br className="desktop-break" /> right at your fingertips.</p>
+          </div>
+          <Link to="/colleges" className="home-view-all">View All <LineIcon name="arrow" size={17} /></Link>
         </div>
 
         <div className="home-card-grid">
           {features.map((feature) => (
-            <Link
+            <Card
+              as={Link}
               to={feature.link}
               className="home-explore-card"
               key={feature.title}
             >
               <span className={`home-card-icon ${feature.color}`}>
-                {feature.icon}
+                <LineIcon name={feature.icon} size={21} />
               </span>
               <h3>{feature.title}</h3>
               <p>{feature.text}</p>
-              <span className="home-card-arrow" aria-hidden="true">↗</span>
-            </Link>
+              <span className="home-card-arrow" aria-hidden="true"><LineIcon name="arrow" size={16} /></span>
+            </Card>
           ))}
         </div>
       </section>
 
-      <section className="home-statistics" aria-label="Admission Sathi statistics">
-        <div><strong>10K+</strong><span>Verified Colleges</span></div>
-        <div><strong>500+</strong><span>Courses</span></div>
-        <div><strong>50+</strong><span>Exams</span></div>
-        <div><strong>20+</strong><span>Scholarships</span></div>
+      <section ref={statsRef} className="home-statistics" aria-label="Admission Saathi statistics">
+        <div className="home-stat-illustration" aria-hidden="true">
+          <BooksIllustration />
+        </div>
+        <div className="home-stat-item">
+          <span className="home-stat-icon"><LineIcon name="building" size={19} /></span>
+          <strong>{collegeCount.toLocaleString("en-IN")}+</strong>
+          <span>Verified Colleges</span>
+        </div>
+        <div className="home-stat-item">
+          <span className="home-stat-icon"><LineIcon name="book" size={19} /></span>
+          <strong>{courseCount.toLocaleString("en-IN")}+</strong>
+          <span>Courses</span>
+        </div>
+        <div className="home-stat-item">
+          <span className="home-stat-icon"><LineIcon name="file" size={19} /></span>
+          <strong>{examCount.toLocaleString("en-IN")}+</strong>
+          <span>Exams</span>
+        </div>
+        <div className="home-stat-item">
+          <span className="home-stat-icon"><LineIcon name="award" size={19} /></span>
+          <strong>{scholarshipCount.toLocaleString("en-IN")}+</strong>
+          <span>Scholarships</span>
+        </div>
       </section>
     </main>
   );

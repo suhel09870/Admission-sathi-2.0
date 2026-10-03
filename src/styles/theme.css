@@ -1,0 +1,47 @@
+:root {
+  --as-green: #16a34a;
+  --as-green-bright: #22c55e;
+  --as-green-hover: #15803d;
+  --as-mint: #f0fdf4;
+  --as-green-soft: #ecfdf5;
+  --as-green-pale: #dcfce7;
+  --as-navy: #0f172a;
+  --as-navy-soft: #1e293b;
+  --as-muted: #64748b;
+  --as-border: #e2e8f0;
+  --as-white: #fff;
+  --as-card-shadow: 0 6px 24px rgba(15, 42, 67, 0.06);
+  --as-radius-control: 12px;
+  --as-radius-card: 16px;
+  --as-radius-pill: 999px;
+  --as-transition: 220ms ease-in-out;
+}
+
+body {
+  background: #f8fafc;
+  color: var(--as-navy);
+  font-family: Inter, "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+}
+
+:focus-visible {
+  outline: 3px solid rgba(34, 197, 94, 0.55);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

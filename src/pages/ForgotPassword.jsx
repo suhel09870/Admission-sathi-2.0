@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "../lib/supabase";
+import Card from "../components/common/Card";
+import Logo from "../components/illustrations/Logo";
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState("");
@@ -17,7 +19,7 @@ export default function ForgotPassword() {
 
     const { error: resetError } =
       await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/reset-password`,
+        redirectTo: `${window.location.origin}${import.meta.env.BASE_URL}reset-password`,
       });
 
     if (resetError) {
@@ -36,9 +38,9 @@ export default function ForgotPassword() {
 
   return (
     <main className="login-page">
-      <section className="login-card">
+      <Card as="section" className="login-card">
         <div className="login-brand">
-          <div className="login-logo">A+</div>
+          <div className="login-logo"><Logo size={36} /></div>
 
           <div>
             <strong>Admission Saathi</strong>
@@ -95,7 +97,7 @@ export default function ForgotPassword() {
           Remember your password?{" "}
           <Link to="/login">Back to Login</Link>
         </p>
-      </section>
+      </Card>
     </main>
   );
 }

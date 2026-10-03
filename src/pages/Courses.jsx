@@ -1,6 +1,13 @@
 import { Link } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
+import Card from "../components/common/Card";
 
 export default function Courses() {
+  const [searchParams] = useSearchParams();
+  const searchTerm = (searchParams.get("course") || searchParams.get("search") || "")
+    .trim()
+    .toLowerCase();
+
   const courseCategories = [
     {
       icon: "💻",
@@ -34,6 +41,23 @@ export default function Courses() {
     },
   ];
 
+  const categorySearchTerms = {
+    "Computer & IT": ["bca", "b.tech", "btech", "mca", "computer", "technology", "it"],
+    "Medical & Health": ["mbbs", "bds", "medical", "health", "pharmacy"],
+    Law: ["llb", "law", "ba llb", "bba llb"],
+    Management: ["bba", "mba", "business", "management"],
+    Science: ["b.sc", "m.sc", "science"],
+    "Arts & Humanities": ["arts", "humanities", "social science"],
+  };
+
+  const visibleCategories = searchTerm
+    ? courseCategories.filter((category) => {
+      const terms = [category.title, ...(categorySearchTerms[category.title] || [])];
+      return terms.some((term) => term.toLowerCase().includes(searchTerm) ||
+        searchTerm.includes(term.toLowerCase()));
+    })
+    : courseCategories;
+
   return (
     <main className="simple-page">
       <section className="simple-page-hero">
@@ -52,23 +76,14 @@ export default function Courses() {
       </section>
 
       <section className="simple-page-content">
-        {courseCategories.map((category) => (
-          <Link
+        {visibleCategories.map((category) => (
+          <Card
+            as={Link}
             key={category.title}
             to={`/courses/${encodeURIComponent(category.title)}`}
-            style={{
-              textDecoration: "none",
-              color: "inherit",
-            }}
+            className="simple-page-card"
+            style={{ cursor: "pointer", height: "100%", boxSizing: "border-box", color: "inherit", textDecoration: "none" }}
           >
-            <article
-              className="simple-page-card"
-              style={{
-                cursor: "pointer",
-                height: "100%",
-                boxSizing: "border-box",
-              }}
-            >
               <div className="simple-page-card-icon">
                 {category.icon}
               </div>
@@ -88,9 +103,15 @@ export default function Courses() {
               >
                 Explore {category.title} →
               </span>
-            </article>
-          </Link>
+          </Card>
         ))}
+
+        {visibleCategories.length === 0 && (
+          <div className="no-results course-search-empty">
+            <h3>No course categories match “{searchTerm}”</h3>
+            <p>Try another course or clear the search on the home page.</p>
+          </div>
+        )}
       </section>
     </main>
   );

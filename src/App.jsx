@@ -7,7 +7,7 @@ import ImportantDates from "./pages/ImportantDates";
 import MyApplications from "./pages/MyApplications";
 import SavedColleges from "./pages/SavedColleges";
 import { useEffect, useState } from "react";
-import Footer from "./components/Footer";
+import Footer from "./components/common/Footer";
 import "./App.css";
 import {
   Routes,
@@ -15,7 +15,7 @@ import {
   Navigate,
 } from "react-router-dom";
 
-import Navbar from "./components/Navbar";
+import Header from "./components/common/Header";
 
 import Home from "./pages/Home";
 import Colleges from "./pages/Colleges";
@@ -582,35 +582,9 @@ function ProfilePage() {
 }
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  useEffect(() => {
-    async function checkSession() {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-
-      setIsLoggedIn(!!session);
-    }
-
-    checkSession();
-
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
-        setIsLoggedIn(!!session);
-      }
-    );
-
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, []);
-
   return (
     <div className="app">
-      {!isLoggedIn && <Navbar />}
+      <Header />
 
       <Routes>
 
