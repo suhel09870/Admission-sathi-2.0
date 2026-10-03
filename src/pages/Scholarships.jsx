@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { supabase } from "../lib/supabase";
+import { isSupabaseConfigured, supabase } from "../lib/supabase";
+import Card from "../components/common/Card";
 
 export default function Scholarships() {
   const [scholarships, setScholarships] = useState([]);
@@ -113,7 +114,8 @@ export default function Scholarships() {
           </div>
         ) : (
           scholarships.map((scholarship) => (
-            <article
+            <Card
+              as="article"
               className="simple-page-card"
               key={scholarship.id}
               style={{
@@ -127,7 +129,7 @@ export default function Scholarships() {
               </div>
 
               <span className="page-eyebrow">
-                VERIFIED SCHOLARSHIP
+                {isSupabaseConfigured ? "VERIFIED SCHOLARSHIP" : "DEMO SCHOLARSHIP"}
               </span>
 
               <h3>{scholarship.title}</h3>
@@ -195,7 +197,7 @@ export default function Scholarships() {
                   </a>
                 )}
               </div>
-            </article>
+            </Card>
           ))
         )}
       </section>

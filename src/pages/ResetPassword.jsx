@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Navigate } from "react-router-dom";
 import { supabase } from "../lib/supabase";
+import Card from "../components/common/Card";
+import Logo from "../components/illustrations/Logo";
 
 export default function ResetPassword() {
   const [password, setPassword] = useState("");
@@ -51,9 +53,9 @@ export default function ResetPassword() {
 
   return (
     <main className="login-page">
-      <section className="login-card">
+      <Card as="section" className="login-card">
         <div className="login-brand">
-          <div className="login-logo">A+</div>
+          <div className="login-logo"><Logo size={36} /></div>
 
           <div>
             <strong>Admission Saathi</strong>
@@ -118,7 +120,7 @@ export default function ResetPassword() {
             {success}
           </p>
         )}
-      </section>
+      </Card>
     </main>
   );
 }

@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "../lib/supabase";
+import Card from "../components/common/Card";
+import Logo from "../components/illustrations/Logo";
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -52,9 +54,9 @@ export default function Signup() {
 
   return (
     <main className="login-page">
-      <section className="login-card">
+      <Card as="section" className="login-card">
         <div className="login-brand">
-          <div className="login-logo">A+</div>
+          <div className="login-logo"><Logo size={36} /></div>
 
           <div>
             <strong>Admission Saathi</strong>
@@ -135,7 +137,7 @@ export default function Signup() {
           Already have an account?{" "}
           <Link to="/login">Sign in</Link>
         </p>
-      </section>
+      </Card>
     </main>
   );
 }

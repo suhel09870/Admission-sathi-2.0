@@ -2,6 +2,8 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import LineIcon from "../components/LineIcon";
+import Button from "../components/common/Button";
+import Card from "../components/common/Card";
 import StudentIllustration from "../components/illustrations/StudentIllustration";
 import BooksIllustration from "../components/illustrations/BooksIllustration";
 
@@ -147,7 +149,8 @@ export default function Home() {
       if (college) filters.set("college", college);
       if (course) filters.set("course", course);
       if (location) filters.set("location", location);
-      navigate(`/colleges?${filters.toString()}`);
+      const route = course && !college && !location ? "/courses" : "/colleges";
+      navigate(`${route}?${filters.toString()}`);
       return;
     }
 
@@ -287,12 +290,12 @@ export default function Home() {
                 aria-label="Search colleges, courses or exams"
               />
             </label>
-            <button type="submit" className="home-search-button"><LineIcon name="search" size={17} />Search</button>
+            <Button type="submit" className="home-search-button"><LineIcon name="search" size={17} />Search</Button>
           </form>
 
           <div className="home-hero-actions">
-            <Link to="/colleges" className="home-primary-action">Explore Colleges <LineIcon name="arrow" size={17} /></Link>
-            <Link to="/courses" className="home-secondary-action">Explore Courses</Link>
+            <Button to="/colleges" className="home-primary-action">Explore Colleges <LineIcon name="arrow" size={17} /></Button>
+            <Button to="/courses" variant="outline" className="home-secondary-action">Explore Courses</Button>
           </div>
         </div>
 
@@ -322,7 +325,8 @@ export default function Home() {
 
         <div className="home-card-grid">
           {features.map((feature) => (
-            <Link
+            <Card
+              as={Link}
               to={feature.link}
               className="home-explore-card"
               key={feature.title}
@@ -333,7 +337,7 @@ export default function Home() {
               <h3>{feature.title}</h3>
               <p>{feature.text}</p>
               <span className="home-card-arrow" aria-hidden="true"><LineIcon name="arrow" size={16} /></span>
-            </Link>
+            </Card>
           ))}
         </div>
       </section>

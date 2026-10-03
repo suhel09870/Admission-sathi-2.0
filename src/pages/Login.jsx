@@ -1,6 +1,9 @@
 import { useState } from "react";
-import { Navigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { supabase } from "../lib/supabase";
+import Button from "../components/common/Button";
+import Card from "../components/common/Card";
+import Logo from "../components/illustrations/Logo";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -47,9 +50,9 @@ export default function Login() {
 
   return (
     <main className="login-page">
-      <section className="login-card">
+      <Card as="section" className="login-card">
         <div className="login-brand">
-          <div className="login-logo">A+</div>
+          <div className="login-logo"><Logo size={36} /></div>
 
           <div>
             <strong>Admission Saathi</strong>
@@ -92,13 +95,13 @@ export default function Login() {
             />
           </label>
 
-          <button
+          <Button
             type="submit"
             className="login-submit"
             disabled={loading}
           >
             {loading ? "Signing In..." : "Sign In →"}
-          </button>
+          </Button>
         </form>
 
         <div
@@ -109,8 +112,8 @@ export default function Login() {
             textAlign: "right",
           }}
         >
-          <a
-            href="/forgot-password"
+          <Link
+            to="/forgot-password"
             style={{
               display: "inline-block",
               color: "#111827",
@@ -122,7 +125,7 @@ export default function Login() {
             }}
           >
             Forgot your password?
-          </a>
+          </Link>
         </div>
 
         {error && (
@@ -139,8 +142,8 @@ export default function Login() {
 
         <p className="login-note">
           Don't have an account?{" "}
-          <a
-            href="/signup"
+          <Link
+            to="/signup"
             style={{
               cursor: "pointer",
               pointerEvents: "auto",
@@ -149,9 +152,9 @@ export default function Login() {
             }}
           >
             Create an account
-          </a>
+          </Link>
         </p>
-      </section>
+      </Card>
     </main>
   );
 }

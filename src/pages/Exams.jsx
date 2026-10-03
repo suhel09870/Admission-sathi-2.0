@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import Card from "../components/common/Card";
 
 export default function Exams() {
   const navigate = useNavigate();
@@ -70,7 +71,8 @@ export default function Exams() {
 
         <div className="exam-grid">
           {examCategories.map((exam) => (
-            <article
+            <Card
+              as="article"
               className="exam-card"
               key={exam.slug}
             >
@@ -92,7 +94,7 @@ export default function Exams() {
               >
                 Explore Exams →
               </button>
-            </article>
+            </Card>
           ))}
         </div>
       </section>

@@ -1,7 +1,8 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { supabase } from "../lib/supabase";
+import { isSupabaseConfigured, supabase } from "../lib/supabase";
+import Card from "../components/common/Card";
 
 export default function Colleges() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -548,7 +549,8 @@ export default function Colleges() {
                   savingCollegeId === college.id;
 
                 return (
-                  <article
+                  <Card
+                    as="article"
                     className="college-card"
                     key={college.id}
                   >
@@ -565,7 +567,7 @@ export default function Colleges() {
                         </span>
 
                         <span className="verified-badge">
-                          ✓ Verified
+                          {isSupabaseConfigured ? "✓ Verified" : "Demo data"}
                         </span>
                       </div>
 
@@ -655,7 +657,7 @@ export default function Colleges() {
                         View College →
                       </Link>
                     </div>
-                  </article>
+                  </Card>
                 );
               })}
             </div>

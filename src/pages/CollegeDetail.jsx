@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { supabase } from "../lib/supabase";
+import { isSupabaseConfigured, supabase } from "../lib/supabase";
 
 export default function CollegeDetail() {
   const { id } = useParams();
@@ -229,7 +229,7 @@ export default function CollegeDetail() {
 
         <div className="college-detail-heading">
           <span className="page-eyebrow">
-            VERIFIED INSTITUTION
+            {isSupabaseConfigured ? "VERIFIED INSTITUTION" : "SAMPLE INSTITUTION"}
           </span>
 
           <h1>{college.name}</h1>
@@ -254,7 +254,7 @@ export default function CollegeDetail() {
               </span>
             )}
 
-            <span>✓ Verified</span>
+            <span>{isSupabaseConfigured ? "✓ Verified" : "Demo data"}</span>
           </div>
         </div>
 
