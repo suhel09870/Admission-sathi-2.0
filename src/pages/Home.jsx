@@ -2,6 +2,8 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import LineIcon from "../components/LineIcon";
+import StudentIllustration from "../components/illustrations/StudentIllustration";
+import BooksIllustration from "../components/illustrations/BooksIllustration";
 
 function useCountUp(target, enabled) {
   const [value, setValue] = useState(0);
@@ -295,27 +297,7 @@ export default function Home() {
         </div>
 
         <div className="home-hero-art" aria-hidden="true">
-          <div className="home-art-cloud cloud-left"></div>
-          <div className="home-art-cloud cloud-right"></div>
-          <div className="home-art-tree tree-left"><i></i><i></i><i></i></div>
-          <div className="home-art-tree tree-right"><i></i><i></i><i></i></div>
-          <div className="home-art-sun"></div>
-          <div className="home-art-campus">
-            <div className="home-campus-roof"></div>
-            <div className="home-campus-columns"><i></i><i></i><i></i></div>
-            <div className="home-campus-base"></div>
-          </div>
-          <div className="home-art-student">
-            <div className="home-student-head"><i></i></div>
-            <div className="home-student-neck"></div>
-            <div className="home-student-body"></div>
-            <div className="home-student-arm"></div>
-            <div className="home-student-book">A</div>
-          </div>
-          <div className="home-art-leaf leaf-one"></div>
-          <div className="home-art-leaf leaf-two"></div>
-          <div className="home-art-card home-art-card-top"><span>✦</span><div><strong>Make your next move</strong><small>One step at a time</small></div></div>
-          <div className="home-art-card home-art-card-bottom"><span>✓</span><div><strong>Find your fit</strong><small>Explore new possibilities</small></div></div>
+          <StudentIllustration />
         </div>
       </section>
 
@@ -358,16 +340,7 @@ export default function Home() {
 
       <section ref={statsRef} className="home-statistics" aria-label="Admission Saathi statistics">
         <div className="home-stat-illustration" aria-hidden="true">
-          <svg viewBox="0 0 150 120" role="presentation">
-            <path d="m74 18 48 22-48 22L26 40l48-22Z" fill="#3c8b59" />
-            <path d="m41 43 33 15 33-15v11c-18 14-48 14-66 0V43Z" fill="#287849" />
-            <path d="m25 70 55-14 45 19-55 15-45-20Z" fill="#f5cf79" />
-            <path d="m25 70 45 20v10L25 80V70ZM70 90l55-15v10L70 100V90Z" fill="#d8a84b" />
-            <path d="m32 88 49-13 45 19-49 14-45-20Z" fill="#8dc69a" />
-            <path d="m32 88 45 20v9L32 97v-9ZM77 108l49-14v9l-49 14v-9Z" fill="#579c69" />
-            <path d="m39 104 42-11 37 16-42 11-37-16Z" fill="#fff" />
-            <path d="m39 104 37 16v6l-37-16v-6ZM76 120l42-11v6l-42 11v-6Z" fill="#dce9df" />
-          </svg>
+          <BooksIllustration />
         </div>
         <div className="home-stat-item">
           <span className="home-stat-icon"><LineIcon name="building" size={19} /></span>

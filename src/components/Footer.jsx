@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
-import LineIcon from "./LineIcon";
+import Logo from "./illustrations/Logo";
 
 export default function Footer() {
   const isHome = useLocation().pathname === "/";
@@ -12,7 +12,7 @@ export default function Footer() {
         {/* Brand */}
         <div className="footer-brand">
           <Link to="/" className="footer-logo">
-            <span className="footer-logo-mark"><LineIcon name="graduation" size={18} /><b>AS</b></span>
+            <span className="footer-logo-mark"><Logo size={36} /></span>
 
             <span className="footer-logo-text">
               <strong>Admission Saathi</strong>
