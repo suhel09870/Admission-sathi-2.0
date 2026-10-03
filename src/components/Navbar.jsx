@@ -1,10 +1,15 @@
 
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import LineIcon from "./LineIcon";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const isHome = useLocation().pathname === "/";
+  const { pathname } = useLocation();
+  const isHome = pathname === "/";
+  const isActive = (path) => path === "/"
+    ? isHome
+    : pathname === path || pathname.startsWith(`${path}/`);
 
   const closeMenu = () => {
     setMenuOpen(false);
@@ -13,7 +18,7 @@ export default function Navbar() {
   return (
     <header className={`site-header${isHome ? " home-header" : ""}`}>
       <Link to="/" className="site-brand" onClick={closeMenu}>
-        <span className="brand-mark">A+S</span>
+        <span className="brand-mark"><LineIcon name="graduation" size={17} /><b>AS</b></span>
 
         <span className="brand-text">
           <strong>Admission Saathi</strong>
@@ -22,17 +27,17 @@ export default function Navbar() {
       </Link>
 
       <nav className="site-nav">
-        {isHome && <Link to="/" aria-current="page">Home</Link>}
-        <Link to="/colleges">Colleges</Link>
-        <Link to="/courses">Courses</Link>
-        <Link to="/exams">Exams</Link>
-        <Link to="/scholarships">Scholarships</Link>
-        <Link to="/compare">Compare</Link>
+        <Link to="/" aria-current={isActive("/") ? "page" : undefined}>Home</Link>
+        <Link to="/colleges" aria-current={isActive("/colleges") ? "page" : undefined}>Colleges</Link>
+        <Link to="/courses" aria-current={isActive("/courses") ? "page" : undefined}>Courses</Link>
+        <Link to="/exams" aria-current={isActive("/exams") ? "page" : undefined}>Exams</Link>
+        <Link to="/scholarships" aria-current={isActive("/scholarships") ? "page" : undefined}>Scholarships</Link>
+        <Link to="/compare" aria-current={isActive("/compare") ? "page" : undefined}>Compare</Link>
       </nav>
 
       <div className="auth-links">
         <Link to="/login" className="login-link">
-          Login
+          <LineIcon name="user" size={16} /> Login
         </Link>
 
         <Link to="/signup" className="signup-link">
@@ -53,24 +58,24 @@ export default function Navbar() {
       </button>
 
       <div className={`mobile-menu ${menuOpen ? "open" : ""}`}>
-        {isHome && <Link to="/" onClick={closeMenu}>Home</Link>}
-        <Link to="/colleges" onClick={closeMenu}>
+        <Link to="/" onClick={closeMenu} aria-current={isActive("/") ? "page" : undefined}>Home</Link>
+        <Link to="/colleges" onClick={closeMenu} aria-current={isActive("/colleges") ? "page" : undefined}>
           Colleges
         </Link>
 
-        <Link to="/courses" onClick={closeMenu}>
+        <Link to="/courses" onClick={closeMenu} aria-current={isActive("/courses") ? "page" : undefined}>
           Courses
         </Link>
 
-        <Link to="/exams" onClick={closeMenu}>
+        <Link to="/exams" onClick={closeMenu} aria-current={isActive("/exams") ? "page" : undefined}>
           Exams
         </Link>
 
-        <Link to="/scholarships" onClick={closeMenu}>
+        <Link to="/scholarships" onClick={closeMenu} aria-current={isActive("/scholarships") ? "page" : undefined}>
           Scholarships
         </Link>
 
-        <Link to="/compare" onClick={closeMenu}>
+        <Link to="/compare" onClick={closeMenu} aria-current={isActive("/compare") ? "page" : undefined}>
           Compare
         </Link>
 

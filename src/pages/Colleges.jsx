@@ -282,19 +282,24 @@ export default function Colleges() {
     setSearch(value);
 
     const trimmedValue = value.trim();
+    setSearchParams((previousParams) => {
+      const nextParams = new URLSearchParams(previousParams);
 
-    if (trimmedValue) {
-      setSearchParams(
-        { search: trimmedValue },
-        { replace: true }
-      );
-    } else {
-      setSearchParams({}, { replace: true });
-    }
+      if (trimmedValue) {
+        nextParams.set("search", trimmedValue);
+      } else {
+        nextParams.delete("search");
+      }
+
+      return nextParams;
+    }, { replace: true });
   };
 
   const filteredColleges = useMemo(() => {
     const query = search.trim().toLowerCase();
+    const requestedCollege = (searchParams.get("college") || "").toLowerCase();
+    const requestedCourse = (searchParams.get("course") || "").toLowerCase();
+    const requestedLocation = (searchParams.get("location") || "").toLowerCase();
 
     return colleges.filter((college) => {
       const collegePrograms =
@@ -331,11 +336,36 @@ export default function Colleges() {
         typeFilter === "All Types" ||
         college.institution_type === typeFilter;
 
+      const requestedCollegeMatch =
+        !requestedCollege ||
+        [college.name, college.category, college.institution_type]
+          .filter(Boolean)
+          .some((value) => value.toLowerCase().includes(requestedCollege));
+
+      const requestedCourseMatch =
+        !requestedCourse ||
+        [college.course, ...collegePrograms]
+          .filter(Boolean)
+          .some((value) => value.toLowerCase().includes(requestedCourse));
+
+      const requestedLocationMatch =
+        !requestedLocation ||
+        [college.city, college.state]
+          .filter(Boolean)
+          .some((value) => {
+            const normalizedValue = value.toLowerCase();
+            return normalizedValue.includes(requestedLocation) ||
+              requestedLocation.includes(normalizedValue);
+          });
+
       return (
         searchMatch &&
         stateMatch &&
         ownershipMatch &&
-        typeMatch
+        typeMatch &&
+        requestedCollegeMatch &&
+        requestedCourseMatch &&
+        requestedLocationMatch
       );
     });
   }, [
@@ -345,6 +375,7 @@ export default function Colleges() {
     stateFilter,
     ownershipFilter,
     typeFilter,
+    searchParams,
   ]);
 
   if (loading) {

@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
+import LineIcon from "./LineIcon";
 
 export default function Footer() {
   const isHome = useLocation().pathname === "/";
@@ -11,7 +12,7 @@ export default function Footer() {
         {/* Brand */}
         <div className="footer-brand">
           <Link to="/" className="footer-logo">
-            <span className="footer-logo-mark">A+</span>
+            <span className="footer-logo-mark"><LineIcon name="graduation" size={18} /><b>AS</b></span>
 
             <span className="footer-logo-text">
               <strong>Admission Saathi</strong>
@@ -47,6 +48,13 @@ export default function Footer() {
             <div className="footer-column footer-connect">
               <h3>Stay Connected</h3>
               <p>Guidance and updates for your higher education journey.</p>
+              <div className="footer-social-links" aria-label="Social media links">
+                <a href="https://www.facebook.com/" aria-label="Facebook" target="_blank" rel="noreferrer">f</a>
+                <a href="https://www.instagram.com/" aria-label="Instagram" target="_blank" rel="noreferrer">◎</a>
+                <a href="https://www.youtube.com/" aria-label="YouTube" target="_blank" rel="noreferrer">▶</a>
+                <a href="https://x.com/" aria-label="X" target="_blank" rel="noreferrer">𝕏</a>
+                <a href="https://www.linkedin.com/" aria-label="LinkedIn" target="_blank" rel="noreferrer">in</a>
+              </div>
             </div>
           </>
         ) : (
@@ -82,7 +90,7 @@ export default function Footer() {
       {/* Bottom */}
       <div className="footer-bottom">
         <div>
-          © 2026 Admission Saathi. All rights reserved.
+          © 2025 Admission Saathi. All rights reserved.
         </div>
 
         <div className="footer-legal">
