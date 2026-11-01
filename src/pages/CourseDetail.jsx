@@ -498,13 +498,14 @@ export default function CourseDetail() {
     const careerPaths = getCareerPaths(selectedCourse.name);
 
     return (
-      <main
-        style={{
-          minHeight: "100vh",
-          background: "#f6f8fc",
-          paddingBottom: "90px",
-        }}
-      >
+  <main
+    className="course-detail-page"
+    style={{
+      minHeight: "100vh",
+      background: "#f6f8fc",
+      paddingBottom: "90px",
+    }}
+  >
         {/* Breadcrumb */}
         <div
           style={{

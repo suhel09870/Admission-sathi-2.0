@@ -261,13 +261,14 @@ function ProfilePage() {
 
 
   return (
-    <main
-      style={{
-        minHeight: "100vh",
-        padding: "60px 24px",
-        background: "#f6f8fc",
-      }}
-    >
+  <main
+    className="profile-page"
+    style={{
+      minHeight: "100vh",
+      padding: "60px 24px",
+      background: "#f6f8fc",
+    }}
+  >
       <section
         style={{
           maxWidth: "900px",
