@@ -10,84 +10,73 @@ export default function SavedColleges() {
   const [removingId, setRemovingId] = useState(null);
 
   useEffect(() => {
+    let isMounted = true;
+
     async function loadSavedColleges() {
       setLoading(true);
       setError("");
 
-      const {
-        data: { user },
-        error: userError,
-      } = await supabase.auth.getUser();
+      try {
+        const {
+          data: { user },
+          error: userError,
+        } = await supabase.auth.getUser();
 
-      if (userError || !user) {
-        setError("Please log in to view your saved colleges.");
-        setLoading(false);
-        return;
+        if (userError) throw userError;
+        if (!user) {
+          if (isMounted) {
+            setError("Please log in to view your saved colleges.");
+          }
+          return;
+        }
+
+        const { data: savedData, error: savedError } = await supabase
+          .from("saved_colleges")
+          .select("college_id, created_at")
+          .eq("user_id", user.id)
+          .order("created_at", {
+            ascending: false,
+          });
+
+        if (savedError) throw savedError;
+
+        if (!savedData || savedData.length === 0) {
+          if (isMounted) setColleges([]);
+          return;
+        }
+
+        const collegeIds = savedData.map((item) => item.college_id);
+        const { data: collegeData, error: collegeError } = await supabase
+          .from("colleges")
+          .select("*")
+          .in("id", collegeIds);
+
+        if (collegeError) throw collegeError;
+
+        const savedOrder = new Map(
+          savedData.map((item, index) => [item.college_id, index])
+        );
+        const sortedColleges = [...(collegeData || [])].sort(
+          (a, b) =>
+            (savedOrder.get(a.id) ?? 9999) -
+            (savedOrder.get(b.id) ?? 9999)
+        );
+
+        if (isMounted) setColleges(sortedColleges);
+      } catch (loadError) {
+        console.error("Saved colleges loading error:", loadError);
+        if (isMounted) {
+          setError(loadError?.message || "Saved colleges could not be loaded.");
+        }
+      } finally {
+        if (isMounted) setLoading(false);
       }
-
-      const {
-        data: savedData,
-        error: savedError,
-      } = await supabase
-        .from("saved_colleges")
-        .select("college_id, created_at")
-        .eq("user_id", user.id)
-        .order("created_at", {
-          ascending: false,
-        });
-
-      if (savedError) {
-        console.error(savedError);
-        setError(savedError.message);
-        setLoading(false);
-        return;
-      }
-
-      if (!savedData || savedData.length === 0) {
-        setColleges([]);
-        setLoading(false);
-        return;
-      }
-
-      const collegeIds = savedData.map(
-        (item) => item.college_id
-      );
-
-      const {
-        data: collegeData,
-        error: collegeError,
-      } = await supabase
-        .from("colleges")
-        .select("*")
-        .in("id", collegeIds);
-
-      if (collegeError) {
-        console.error(collegeError);
-        setError(collegeError.message);
-        setLoading(false);
-        return;
-      }
-
-      const savedOrder = new Map(
-        savedData.map((item, index) => [
-          item.college_id,
-          index,
-        ])
-      );
-
-      const sortedColleges = [
-        ...(collegeData || []),
-      ].sort(
-        (a, b) =>
-          (savedOrder.get(a.id) ?? 9999) -
-          (savedOrder.get(b.id) ?? 9999)
-      );
-
-      setColleges(sortedColleges);
-      setLoading(false);
     }
 
     loadSavedColleges();
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   async function removeCollege(collegeId) {

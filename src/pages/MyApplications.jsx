@@ -16,23 +16,27 @@ export default function MyApplications() {
   const [editNotes, setEditNotes] = useState("");
 
   useEffect(() => {
+    let isMounted = true;
+
     async function loadApplications() {
       setLoading(true);
       setError("");
 
-      const {
-        data: { user },
-        error: userError,
-      } = await supabase.auth.getUser();
+      try {
+        const {
+          data: { user },
+          error: userError,
+        } = await supabase.auth.getUser();
 
-      if (userError || !user) {
-        setError("Please log in to view your applications.");
-        setLoading(false);
-        return;
-      }
+        if (userError) throw userError;
+        if (!user) {
+          if (isMounted) {
+            setError("Please log in to view your applications.");
+          }
+          return;
+        }
 
-      const { data, error: applicationError } =
-        await supabase
+        const { data, error: applicationError } = await supabase
           .from("applications")
           .select(`
             id,
@@ -64,22 +68,22 @@ export default function MyApplications() {
             ascending: false,
           });
 
-      if (applicationError) {
-        console.error(
-          "Applications loading error:",
-          applicationError
-        );
-
-        setError(applicationError.message);
-        setLoading(false);
-        return;
+        if (applicationError) throw applicationError;
+        if (isMounted) setApplications(data || []);
+      } catch (loadError) {
+        console.error("Applications loading error:", loadError);
+        if (isMounted) {
+          setError(loadError?.message || "Applications could not be loaded.");
+        }
+      } finally {
+        if (isMounted) setLoading(false);
       }
-
-      setApplications(data || []);
-      setLoading(false);
     }
 
     loadApplications();
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   function startEditing(application) {

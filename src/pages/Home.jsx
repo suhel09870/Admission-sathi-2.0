@@ -3,9 +3,46 @@ import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import LineIcon from "../components/LineIcon";
 import Button from "../components/common/Button";
-import Card from "../components/common/Card";
 import StudentIllustration from "../components/illustrations/StudentIllustration";
-import BooksIllustration from "../components/illustrations/BooksIllustration";
+import { supabase } from "../lib/supabase";
+
+const HOME_FEATURES = [
+  {
+    icon: "zap",
+    title: "Smart Search",
+    text: "Find colleges, courses and exams with useful discovery filters.",
+    link: "/colleges",
+    color: "green",
+  },
+  {
+    icon: "chart",
+    title: "Compare Options",
+    text: "Compare colleges side by side before you decide.",
+    link: "/compare",
+    color: "purple",
+  },
+  {
+    icon: "bell",
+    title: "Get Alerts",
+    text: "Keep track of important admission dates and deadlines.",
+    link: "/important-dates",
+    color: "orange",
+  },
+  {
+    icon: "award",
+    title: "Scholarship Guide",
+    text: "Explore financial support for your education journey.",
+    link: "/scholarships",
+    color: "blue",
+  },
+  {
+    icon: "shield",
+    title: "Secure & Trusted",
+    text: "Save your choices and keep your application plan organised.",
+    link: "/signup",
+    color: "teal",
+  },
+];
 
 function useCountUp(target, enabled) {
   const [value, setValue] = useState(0);
@@ -48,11 +85,146 @@ export default function Home() {
   const [college, setCollege] = useState("");
   const [course, setCourse] = useState("");
   const [location, setLocation] = useState("");
+  const [directoryStats, setDirectoryStats] = useState({
+    colleges: null,
+    programs: null,
+    scholarships: null,
+    dates: null,
+  });
+  const [collegeTypes, setCollegeTypes] = useState([]);
+  const [courseOptions, setCourseOptions] = useState([]);
+  const [locations, setLocations] = useState([]);
+  const [directoryError, setDirectoryError] = useState("");
+  const [updates, setUpdates] = useState([]);
+  const [updatesError, setUpdatesError] = useState("");
 
-  const collegeCount = useCountUp(100, statsVisible);
-  const courseCount = useCountUp(1000, statsVisible);
-  const examCount = useCountUp(50, statsVisible);
-  const scholarshipCount = useCountUp(20, statsVisible);
+  const collegeCount = useCountUp(directoryStats.colleges ?? 0, statsVisible);
+  const programCount = useCountUp(directoryStats.programs ?? 0, statsVisible);
+  const scholarshipCount = useCountUp(
+    directoryStats.scholarships ?? 0,
+    statsVisible
+  );
+  const dateCount = useCountUp(directoryStats.dates ?? 0, statsVisible);
+  const featureCount = useCountUp(HOME_FEATURES.length, statsVisible);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    async function loadDirectoryData() {
+      try {
+        const [collegeResult, programResult, scholarshipResult, datesResult] =
+          await Promise.all([
+          supabase
+            .from("colleges")
+            .select("id, city, state, institution_type, category", {
+              count: "exact",
+            }),
+          supabase
+            .from("programs")
+            .select("id, program_name", { count: "exact" }),
+          supabase
+            .from("scholarships")
+            .select("id", { count: "exact" }),
+          supabase
+            .from("important_dates")
+            .select("id, title, date, description, verification_status", {
+              count: "exact",
+            })
+            .order("date", { ascending: true }),
+          ]);
+
+        if (!isMounted) return;
+
+        const errors = [];
+
+        if (collegeResult.error) {
+          console.error("Home college data error:", collegeResult.error);
+          errors.push("College filters and counts could not be loaded.");
+        } else {
+          const collegeRows = collegeResult.data || [];
+          const types = collegeRows
+            .flatMap((item) => [item.institution_type, item.category])
+            .filter(Boolean);
+          const availableLocations = collegeRows
+            .flatMap((item) => [item.city, item.state])
+            .filter(Boolean);
+
+          setCollegeTypes(
+            [...new Set(types)].sort((left, right) =>
+              left.localeCompare(right)
+            )
+          );
+          setLocations(
+            [...new Set(availableLocations)].sort((left, right) =>
+              left.localeCompare(right)
+            )
+          );
+        }
+
+        if (programResult.error) {
+          console.error("Home program data error:", programResult.error);
+          errors.push("Course filters and counts could not be loaded.");
+        } else {
+          const names = (programResult.data || [])
+            .map((item) => item.program_name)
+            .filter(Boolean);
+
+          setCourseOptions(
+            [...new Set(names)].sort((left, right) =>
+              left.localeCompare(right)
+            )
+          );
+        }
+
+        if (scholarshipResult.error) {
+          console.error(
+            "Home scholarship data error:",
+            scholarshipResult.error
+          );
+          errors.push("Scholarship totals could not be loaded.");
+        }
+
+        if (datesResult.error) {
+          console.error("Home update data error:", datesResult.error);
+          setUpdates([]);
+          setUpdatesError("Admission date updates could not be loaded.");
+          errors.push("Admission date updates could not be loaded.");
+        } else {
+          setUpdates(datesResult.data || []);
+          setUpdatesError("");
+        }
+
+        setDirectoryStats({
+          colleges: collegeResult.error
+            ? null
+            : collegeResult.count ?? collegeResult.data?.length ?? null,
+          programs: programResult.error
+            ? null
+            : programResult.count ?? programResult.data?.length ?? null,
+          scholarships: scholarshipResult.error
+            ? null
+            : scholarshipResult.count ??
+              scholarshipResult.data?.length ??
+              null,
+          dates: datesResult.error
+            ? null
+            : datesResult.count ?? datesResult.data?.length ?? null,
+        });
+        setDirectoryError(errors.join(" "));
+      } catch (loadError) {
+        console.error("Home directory data error:", loadError);
+        if (isMounted) {
+          setDirectoryError("Directory filters and counts could not be loaded.");
+          setUpdatesError("Admission date updates could not be loaded.");
+        }
+      }
+    }
+
+    loadDirectoryData();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   useEffect(() => {
     const statsElement = statsRef.current;
@@ -78,72 +250,6 @@ export default function Home() {
     observer.observe(statsElement);
     return () => observer.disconnect();
   }, []);
-
-  const features = [
-    {
-      icon: "building",
-      title: "Colleges",
-      text: "Explore colleges and discover the right place for your future.",
-      link: "/colleges",
-      color: "green",
-    },
-    {
-      icon: "book",
-      title: "Courses",
-      text: "Explore courses, eligibility criteria and study options.",
-      link: "/courses",
-      color: "blue",
-    },
-    {
-      icon: "file",
-      title: "Exams",
-      text: "Discover entrance exams, patterns and important updates.",
-      link: "/exams",
-      color: "purple",
-    },
-    {
-      icon: "award",
-      title: "Scholarships",
-      text: "Explore financial aid and scholarship opportunities.",
-      link: "/scholarships",
-      color: "orange",
-    },
-    {
-      icon: "scale",
-      title: "Compare",
-      text: "Compare your options and make informed decisions.",
-      link: "/compare",
-      color: "teal",
-    },
-  ];
-
-  const highlights = [
-    {
-      icon: "check",
-      title: "Verified Colleges",
-      text: "Find information from verified sources",
-    },
-    {
-      icon: "book",
-      title: "Course Discovery",
-      text: "Explore different study options",
-    },
-    {
-      icon: "file",
-      title: "Entrance Exams",
-      text: "Find exam information and updates",
-    },
-    {
-      icon: "award",
-      title: "Scholarships",
-      text: "Discover financial support options",
-    },
-    {
-      icon: "scale",
-      title: "Compare Options",
-      text: "Make informed education choices",
-    },
-  ];
 
   const courseSearchMap = {
     bca: "bca",
@@ -180,12 +286,7 @@ export default function Home() {
       if (course) filters.set("course", course);
       if (location) filters.set("location", location);
 
-      const route =
-        course && !college && !location
-          ? "/courses"
-          : "/colleges";
-
-      navigate(`${route}?${filters.toString()}`);
+      navigate(`/colleges?${filters.toString()}`);
       return;
     }
 
@@ -272,11 +373,11 @@ export default function Home() {
                 onChange={(event) => setCollege(event.target.value)}
               >
                 <option value="">Any college type</option>
-                <option value="Engineering">Engineering</option>
-                <option value="Medical">Medical</option>
-                <option value="Management">Management</option>
-                <option value="Science">Science</option>
-                <option value="Arts & Humanities">Arts &amp; Humanities</option>
+                {collegeTypes.map((type) => (
+                  <option value={type} key={type}>
+                    {type}
+                  </option>
+                ))}
               </select>
             </label>
 
@@ -290,12 +391,11 @@ export default function Home() {
                 onChange={(event) => setCourse(event.target.value)}
               >
                 <option value="">Any course</option>
-                <option value="bca">BCA</option>
-                <option value="b.tech">B.Tech</option>
-                <option value="bba">BBA</option>
-                <option value="mba">MBA</option>
-                <option value="mbbs">MBBS</option>
-                <option value="llb">LLB</option>
+                {courseOptions.map((programName) => (
+                  <option value={programName} key={programName}>
+                    {programName}
+                  </option>
+                ))}
               </select>
             </label>
 
@@ -309,12 +409,11 @@ export default function Home() {
                 onChange={(event) => setLocation(event.target.value)}
               >
                 <option value="">Anywhere in India</option>
-                <option value="New Delhi">New Delhi</option>
-                <option value="Mumbai">Mumbai</option>
-                <option value="Bengaluru">Bengaluru</option>
-                <option value="Chennai">Chennai</option>
-                <option value="Hyderabad">Hyderabad</option>
-                <option value="Pune">Pune</option>
+                {locations.map((cityOrState) => (
+                  <option value={cityOrState} key={cityOrState}>
+                    {cityOrState}
+                  </option>
+                ))}
               </select>
             </label>
 
@@ -335,6 +434,12 @@ export default function Home() {
             </Button>
           </form>
 
+          {directoryError && (
+            <p className="home-directory-error" role="status">
+              {directoryError}
+            </p>
+          )}
+
           <div className="home-hero-actions">
             <Button to="/colleges" className="home-primary-action">
               Explore Colleges
@@ -349,101 +454,121 @@ export default function Home() {
 
         <div className="home-hero-art" aria-hidden="true">
           <StudentIllustration />
-        </div>
-      </section>
-
-      <section className="home-highlights" aria-label="Admission Saathi features">
-        {highlights.map((highlight) => (
-          <div className="home-highlight" key={highlight.title}>
-            <span className="home-highlight-icon">
-              <LineIcon name={highlight.icon} size={19} />
-            </span>
-            <div>
-              <strong>{highlight.title}</strong>
-              <small>{highlight.text}</small>
-            </div>
+          <div className="home-art-message">
+            <span>Dream big</span>
+            <strong>Achieve more</strong>
           </div>
-        ))}
-      </section>
-
-      <section className="home-explore">
-        <div className="home-section-heading-row">
-          <div className="home-section-heading">
-            <span className="home-eyebrow">EXPLORE</span>
-            <h2>Everything You Need to Plan Your Future</h2>
-            <p>
-              Explore your options, make confident decisions and take
-              the next step towards your education goals.
-            </p>
-          </div>
-
-          <Link to="/colleges" className="home-view-all">
-            View All
-            <LineIcon name="arrow" size={17} />
-          </Link>
-        </div>
-
-        <div className="home-card-grid">
-          {features.map((feature) => (
-            <Card
-              as={Link}
-              to={feature.link}
-              className="home-explore-card"
-              key={feature.title}
-            >
-              <span className={`home-card-icon ${feature.color}`}>
-                <LineIcon name={feature.icon} size={21} />
-              </span>
-              <h3>{feature.title}</h3>
-              <p>{feature.text}</p>
-              <span className="home-card-arrow" aria-hidden="true">
-                <LineIcon name="arrow" size={16} />
-              </span>
-            </Card>
-          ))}
         </div>
       </section>
 
       <section
         ref={statsRef}
         className="home-statistics"
-        aria-label="Admission Saathi statistics"
+        aria-label="Admission Saathi directory statistics"
       >
-        <div className="home-stat-illustration" aria-hidden="true">
-          <BooksIllustration />
-        </div>
-
         <div className="home-stat-item">
-          <span className="home-stat-icon">
-            <LineIcon name="building" size={19} />
-          </span>
-          <strong>{collegeCount.toLocaleString("en-IN")}+</strong>
-          <span>Verified Colleges</span>
+          <span className="home-stat-icon"><LineIcon name="building" size={21} /></span>
+          <strong>{directoryStats.colleges === null ? "—" : `${collegeCount.toLocaleString("en-IN")}+`}</strong>
+          <span>Colleges</span>
         </div>
-
         <div className="home-stat-item">
-          <span className="home-stat-icon">
-            <LineIcon name="book" size={19} />
-          </span>
-          <strong>{courseCount.toLocaleString("en-IN")}+</strong>
-          <span>Courses</span>
+          <span className="home-stat-icon"><LineIcon name="book" size={21} /></span>
+          <strong>{directoryStats.programs === null ? "—" : `${programCount.toLocaleString("en-IN")}+`}</strong>
+          <span>Programs</span>
         </div>
-
         <div className="home-stat-item">
-          <span className="home-stat-icon">
-            <LineIcon name="file" size={19} />
-          </span>
-          <strong>{examCount.toLocaleString("en-IN")}+</strong>
-          <span>Exams</span>
-        </div>
-
-        <div className="home-stat-item">
-          <span className="home-stat-icon">
-            <LineIcon name="award" size={19} />
-          </span>
-          <strong>{scholarshipCount.toLocaleString("en-IN")}+</strong>
+          <span className="home-stat-icon"><LineIcon name="award" size={21} /></span>
+          <strong>{directoryStats.scholarships === null ? "—" : `${scholarshipCount.toLocaleString("en-IN")}+`}</strong>
           <span>Scholarships</span>
         </div>
+        <div className="home-stat-item">
+          <span className="home-stat-icon"><LineIcon name="file" size={21} /></span>
+          <strong>{directoryStats.dates === null ? "—" : `${dateCount.toLocaleString("en-IN")}+`}</strong>
+          <span>Admission Dates</span>
+        </div>
+        <div className="home-stat-item">
+          <span className="home-stat-icon"><LineIcon name="graduation" size={21} /></span>
+          <strong>{featureCount.toLocaleString("en-IN")}</strong>
+          <span>Ways to explore</span>
+        </div>
+      </section>
+
+      <section className="home-benefits" aria-labelledby="home-benefits-title">
+        <div className="home-benefits-intro">
+          <span className="home-eyebrow">WHY CHOOSE US</span>
+          <h2 id="home-benefits-title">Why Choose<br />Admission Saathi?</h2>
+          <p>
+            Everything you need to make confident decisions about your
+            higher education journey.
+          </p>
+          <Link to="/colleges" className="home-learn-more">
+            Learn More <LineIcon name="arrow" size={16} />
+          </Link>
+        </div>
+
+        <div className="home-benefits-grid">
+          {HOME_FEATURES.map((feature) => (
+            <Link
+              to={feature.link}
+              className="home-benefit-card"
+              key={feature.title}
+            >
+              <span className={`home-benefit-icon ${feature.color}`}>
+                <LineIcon name={feature.icon} size={23} />
+              </span>
+              <h3>{feature.title}</h3>
+              <p>{feature.text}</p>
+              <span className="home-benefit-arrow" aria-hidden="true">
+                <LineIcon name="arrow" size={15} />
+              </span>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      <section className="home-updates" aria-labelledby="home-updates-title">
+        <div className="home-updates-heading">
+          <span className="home-updates-megaphone" aria-hidden="true">
+            <LineIcon name="bell" size={24} />
+          </span>
+          <div>
+            <h2 id="home-updates-title">Latest Updates</h2>
+            <p>Stay informed with the latest admission news</p>
+          </div>
+        </div>
+
+        {updatesError ? (
+          <p className="home-updates-message" role="status">{updatesError}</p>
+        ) : updates.length ? (
+          <div className="home-updates-list">
+            {updates.slice(0, 3).map((update) => (
+              <Link
+                to="/important-dates"
+                className="home-update-item"
+                key={update.id}
+              >
+                <span className="home-update-icon">
+                  <LineIcon name="calendar" size={21} />
+                </span>
+                <span className="home-update-copy">
+                  <strong>{update.title}</strong>
+                  <small>
+                    {update.verification_status === "sample" && "Sample · "}
+                    {update.date || "Date to be announced"}
+                  </small>
+                </span>
+              </Link>
+            ))}
+          </div>
+        ) : (
+          <p className="home-updates-message">
+            Admission date updates will appear here when available.
+          </p>
+        )}
+
+        <Link to="/important-dates" className="home-updates-all">
+          View All Updates <LineIcon name="arrow" size={16} />
+        </Link>
       </section>
     </main>
   );

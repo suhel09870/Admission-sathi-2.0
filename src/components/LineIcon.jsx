@@ -49,6 +49,26 @@ const iconPaths = {
   ),
   arrow: <path d="M5 12h14m-6-6 6 6-6 6" />,
   check: <path d="m5 12 4 4L19 6" />,
+  zap: <path d="m13 2-3 8h7l-6 12 2-9H6l7-11Z" />,
+  chart: <path d="M4 20V10M10 20V4M16 20v-7M22 20H2" />,
+  bell: (
+    <>
+      <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9" />
+      <path d="M10 21h4" />
+    </>
+  ),
+  calendar: (
+    <>
+      <rect x="3" y="5" width="18" height="16" rx="2" />
+      <path d="M16 3v4M8 3v4M3 10h18M8 14h.01M12 14h.01M16 14h.01M8 17h.01M12 17h.01" />
+    </>
+  ),
+  shield: (
+    <>
+      <path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11Z" />
+      <path d="m9 12 2 2 4-4" />
+    </>
+  ),
 };
 
 export default function LineIcon({ name, size = 20, className = "" }) {

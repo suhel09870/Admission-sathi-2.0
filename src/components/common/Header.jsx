@@ -40,9 +40,20 @@ export default function Header() {
         ))}
       </nav>
 
+      <Link
+        to="/colleges"
+        className="header-search-link"
+        aria-label="Search colleges"
+      >
+        <LineIcon name="search" size={19} />
+      </Link>
+
       <div className="auth-links">
         <Button to="/login" className="login-link" pill>
           <LineIcon name="user" size={16} /> Login
+        </Button>
+        <Button to="/signup" className="signup-link" variant="outline" pill>
+          Sign Up <LineIcon name="arrow" size={15} />
         </Button>
       </div>
 
@@ -70,6 +81,7 @@ export default function Header() {
         ))}
         <div className="mobile-menu-divider"></div>
         <Link to="/login" className="mobile-login" onClick={closeMenu}>Login</Link>
+        <Link to="/signup" className="mobile-signup" onClick={closeMenu}>Sign Up</Link>
       </nav>
     </header>
   );

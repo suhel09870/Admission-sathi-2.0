@@ -39,27 +39,38 @@ function ProtectedRoute({ children }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function checkSession() {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
+    let isMounted = true;
 
-      setUser(session?.user || null);
-      setLoading(false);
+    async function checkSession() {
+      try {
+        const {
+          data: { session },
+          error: sessionError,
+        } = await supabase.auth.getSession();
+
+        if (sessionError) throw sessionError;
+        if (isMounted) setUser(session?.user || null);
+      } catch (sessionError) {
+        console.error("Session check error:", sessionError);
+        if (isMounted) setUser(null);
+      } finally {
+        if (isMounted) setLoading(false);
+      }
     }
 
     checkSession();
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (isMounted) {
         setUser(session?.user || null);
         setLoading(false);
       }
-    );
+    });
 
     return () => {
+      isMounted = false;
       subscription.unsubscribe();
     };
   }, []);
@@ -105,52 +116,60 @@ function ProfilePage() {
 
 
   useEffect(() => {
+    let isMounted = true;
+
     async function loadProfile() {
       setLoading(true);
       setError("");
 
-      const {
-        data: { user },
-        error: userError,
-      } = await supabase.auth.getUser();
+      try {
+        const {
+          data: { user },
+          error: userError,
+        } = await supabase.auth.getUser();
 
-      if (userError || !user) {
-        setError("Please log in to view your profile.");
-        setLoading(false);
-        return;
+        if (userError) throw userError;
+        if (!user) {
+          if (isMounted) {
+            setError("Please log in to view your profile.");
+          }
+          return;
+        }
+
+        const { data, error: profileError } = await supabase
+          .from("profiles")
+          .select(
+            "id, full_name, phone, city, preferred_course, created_at, updated_at"
+          )
+          .eq("id", user.id)
+          .maybeSingle();
+
+        if (profileError) throw profileError;
+        if (!isMounted) return;
+
+        setUser(user);
+        setFullName(
+          data?.full_name ||
+            user.user_metadata?.full_name ||
+            ""
+        );
+        setPhone(data?.phone || "");
+        setCity(data?.city || "");
+        setPreferredCourse(data?.preferred_course || "");
+      } catch (loadError) {
+        console.error("Profile load error:", loadError);
+        if (isMounted) {
+          setError(loadError?.message || "Profile could not be loaded.");
+        }
+      } finally {
+        if (isMounted) setLoading(false);
       }
-
-      setUser(user);
-
-      const { data, error: profileError } = await supabase
-        .from("profiles")
-        .select(
-          "id, full_name, phone, city, preferred_course, created_at, updated_at"
-        )
-        .eq("id", user.id)
-        .maybeSingle();
-
-      if (profileError) {
-        console.error("Profile load error:", profileError);
-        setError(profileError.message);
-        setLoading(false);
-        return;
-      }
-
-      setFullName(
-        data?.full_name ||
-          user.user_metadata?.full_name ||
-          ""
-      );
-
-      setPhone(data?.phone || "");
-      setCity(data?.city || "");
-      setPreferredCourse(data?.preferred_course || "");
-
-      setLoading(false);
     }
 
     loadProfile();
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   async function handleSave(event) {

@@ -8,48 +8,51 @@ export default function ImportantDates() {
   const [error, setError] = useState("");
 
   useEffect(() => {
+    let isMounted = true;
+
     async function loadImportantDates() {
       setLoading(true);
       setError("");
 
-      const { data, error: datesError } = await supabase
-        .from("important_dates")
-        .select(`
-          id,
-          college_id,
-          title,
-          date,
-          description,
-          source_url,
-          verification_status,
-          colleges (
+      try {
+        const { data, error: datesError } = await supabase
+          .from("important_dates")
+          .select(`
             id,
-            name,
-            city,
-            state,
-            institution_type,
-            ownership
-          )
-        `)
-        .order("date", { ascending: true });
+            college_id,
+            title,
+            date,
+            description,
+            source_url,
+            verification_status,
+            colleges (
+              id,
+              name,
+              city,
+              state,
+              institution_type,
+              ownership
+            )
+          `)
+          .order("date", { ascending: true });
 
-      if (datesError) {
-        console.error(
-          "Important dates loading error:",
-          datesError
-        );
-
-        setError(datesError.message);
-        setDates([]);
-        setLoading(false);
-        return;
+        if (datesError) throw datesError;
+        if (isMounted) setDates(data || []);
+      } catch (loadError) {
+        console.error("Important dates loading error:", loadError);
+        if (isMounted) {
+          setDates([]);
+          setError(loadError?.message || "Important dates could not be loaded.");
+        }
+      } finally {
+        if (isMounted) setLoading(false);
       }
-
-      setDates(data || []);
-      setLoading(false);
     }
 
     loadImportantDates();
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   function formatDate(dateValue) {

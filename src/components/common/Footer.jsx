@@ -1,4 +1,5 @@
-import { Link, useLocation } from "react-router-dom";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 import Logo from "../illustrations/Logo";
 
 const navigation = [
@@ -19,7 +20,7 @@ const socialLinks = [
 ];
 
 export default function Footer() {
-  const isHome = useLocation().pathname === "/";
+  const [subscriptionMessage, setSubscriptionMessage] = useState("");
 
   return (
     <footer className="site-footer home-footer">
@@ -38,10 +39,7 @@ export default function Footer() {
         <div className="footer-column">
           <h3>Quick Links</h3>
           {navigation.map(([label, path]) => <Link key={path} to={path}>{label}</Link>)}
-        </div>
-
-        <div className="footer-column">
-          <h3>Student Resources</h3>
+          <h3 className="footer-subheading">Student Resources</h3>
           <Link to="/dashboard">Dashboard</Link>
           <Link to="/saved-colleges">Saved Colleges</Link>
           <Link to="/my-applications">My Applications</Link>
@@ -57,12 +55,44 @@ export default function Footer() {
             ))}
           </div>
         </div>
+
+        <div className="footer-column footer-subscribe">
+          <h3>Subscribe for Updates</h3>
+          <p>Get the latest admission news and helpful reminders.</p>
+          <form
+            className="footer-subscribe-form"
+            onSubmit={(event) => {
+              event.preventDefault();
+              setSubscriptionMessage(
+                "Email subscriptions are not configured yet. You can create an account to manage your admission journey."
+              );
+            }}
+          >
+            <label className="visually-hidden" htmlFor="footer-subscribe-email">
+              Email address
+            </label>
+            <input
+              id="footer-subscribe-email"
+              type="email"
+              placeholder="Enter your email"
+              autoComplete="email"
+              required
+            />
+            <button type="submit">Subscribe</button>
+          </form>
+          {subscriptionMessage && (
+            <p className="footer-subscribe-message" role="status">
+              {subscriptionMessage} <Link to="/signup">Create an account</Link>
+            </p>
+          )}
+        </div>
       </div>
 
       <div className="footer-bottom">
-        <div>© 2025 Admission Saathi. All rights reserved.</div>
+        <div>© {new Date().getFullYear()} Admission Saathi. All rights reserved.</div>
         <div className="footer-legal">
-          {isHome && <Link to="/login">Login</Link>}
+          <Link to="/login">Login</Link>
+          <Link to="/signup">Sign Up</Link>
         </div>
       </div>
     </footer>
