@@ -16316,3 +16316,65 @@ body {
     font-size: 10px;
   }
 }
+/* Reference-matched integrated hero artwork */
+.home-page .home-hero-art {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  min-height: 350px;
+  padding: 0;
+  overflow: visible;
+  isolation: isolate;
+}
+
+.home-page .home-hero-art::before {
+  display: none;
+}
+
+.home-page .home-hero-art .student-illustration {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 560px;
+  max-height: 430px;
+  object-fit: contain;
+  object-position: center;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  filter: none;
+  mix-blend-mode: multiply;
+  animation: home-student-float 4.5s ease-in-out infinite;
+}
+
+.home-page .home-art-message {
+  display: none;
+}
+
+@media (max-width: 760px) {
+  .home-page .home-hero-art {
+    width: 100%;
+    min-height: 0;
+    max-height: none;
+    margin: 0 auto;
+  }
+
+  .home-page .home-hero-art .student-illustration {
+    width: 100%;
+    height: auto;
+    max-width: 460px;
+    max-height: 330px;
+    object-fit: contain;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-page .home-hero-art .student-illustration {
+    animation: none;
+  }
+}

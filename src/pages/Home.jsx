@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import LineIcon from "../components/LineIcon";
 import Button from "../components/common/Button";
-import StudentIllustration from "../components/illustrations/StudentIllustration";
+import heroStudent from "../assets/hero-student-reference.png";
 import { supabase } from "../lib/supabase";
 
 const HOME_FEATURES = [
@@ -452,8 +452,12 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="home-hero-art" aria-hidden="true">
-          <StudentIllustration />
+        <div className="home-hero-art">
+          <img
+            src={heroStudent}
+            alt=""
+            className="student-illustration"
+          />
           <div className="home-art-message">
             <span>Dream big</span>
             <strong>Achieve more</strong>
