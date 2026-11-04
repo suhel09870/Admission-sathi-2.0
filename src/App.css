@@ -16378,3 +16378,281 @@ body {
     animation: none;
   }
 }
+
+/* Admission Saathi — seamless student hero artwork */
+.home-page .home-hero-art {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  min-height: 390px;
+  padding: 0;
+  overflow: visible;
+  isolation: isolate;
+}
+
+.home-page .home-hero-art::before {
+  content: "";
+  display: block;
+  position: absolute;
+  z-index: -1;
+  width: 82%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.78) 0%,
+    rgba(210, 244, 228, 0.52) 48%,
+    rgba(210, 244, 228, 0) 74%
+  );
+  filter: blur(12px);
+}
+
+.home-page .home-hero-art .student-illustration {
+  display: block;
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: auto;
+  max-width: 570px;
+  max-height: 450px;
+  object-fit: contain;
+  object-position: center;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  filter: drop-shadow(0 18px 22px rgba(35, 90, 68, 0.10));
+  mix-blend-mode: normal;
+  animation: home-student-float 5s ease-in-out infinite;
+}
+
+.home-page .home-art-message {
+  display: none;
+}
+
+@media (max-width: 760px) {
+  .home-page .home-hero-art {
+    width: 100%;
+    min-height: 0;
+    margin: 0 auto;
+  }
+
+  .home-page .home-hero-art .student-illustration {
+    width: 100%;
+    max-width: 430px;
+    max-height: 340px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-page .home-hero-art .student-illustration {
+    animation: none;
+  }
+}
+
+/* Admission Saathi — final brand identity */
+
+/* Header logo */
+.site-header-global .brand-mark {
+  flex: 0 0 48px;
+  width: 48px;
+  height: 48px;
+  overflow: visible;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.site-header-global .brand-mark svg {
+  width: 48px;
+  height: 48px;
+}
+
+.site-header-global .brand-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  line-height: 1.05;
+}
+
+.site-header-global .brand-text strong {
+  color: #172b4d;
+  font-size: 19px;
+  font-weight: 850;
+  letter-spacing: -0.7px;
+}
+
+.site-header-global .brand-text span {
+  color: #16a34a;
+  font-size: 19px;
+  font-weight: 850;
+  letter-spacing: -0.7px;
+}
+
+/* Footer logo */
+.site-footer.home-footer .footer-logo-mark {
+  flex: 0 0 48px;
+  width: 48px;
+  height: 48px;
+  overflow: visible;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+.site-footer.home-footer .footer-logo-mark svg {
+  width: 48px;
+  height: 48px;
+}
+
+.site-footer.home-footer .footer-logo-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  line-height: 1.1;
+}
+
+.site-footer.home-footer .footer-logo-text strong {
+  color: #ffffff;
+  font-size: 20px;
+  font-weight: 850;
+  letter-spacing: -0.6px;
+}
+
+.site-footer.home-footer .footer-logo-text span {
+  color: #39d77a;
+  font-size: 20px;
+  font-weight: 850;
+  letter-spacing: -0.6px;
+}
+
+/* Mobile logo */
+@media (max-width: 760px) {
+  .site-header-global .brand-mark,
+  .site-header-global .brand-mark svg {
+    width: 42px;
+    height: 42px;
+  }
+
+  .site-header-global .brand-text strong,
+  .site-header-global .brand-text span {
+    font-size: 16px;
+  }
+}
+/* FINAL FOOTER COMPACT LAYOUT */
+.site-footer.home-footer {
+  min-height: 0;
+  height: auto;
+  margin-top: 24px;
+}
+
+.site-footer.home-footer .footer-container {
+  display: grid;
+  grid-template-columns: 1.15fr 0.8fr 0.95fr 1.05fr 1.2fr;
+  align-items: start;
+  gap: 24px;
+  width: min(1280px, calc(100% - 48px));
+  padding: 28px 0 22px;
+}
+
+.site-footer.home-footer .footer-brand,
+.site-footer.home-footer .footer-column {
+  min-width: 0;
+  align-self: start;
+}
+
+.site-footer.home-footer .footer-column {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.site-footer.home-footer .footer-column h3 {
+  margin: 0 0 7px;
+}
+
+.site-footer.home-footer .footer-column h3.footer-subheading {
+  margin-top: 0;
+}
+
+.site-footer.home-footer .footer-column > a {
+  line-height: 1.5;
+}
+
+.site-footer.home-footer .footer-brand > p {
+  max-width: 260px;
+  margin-top: 14px;
+}
+
+.site-footer.home-footer .footer-connect > p,
+.site-footer.home-footer .footer-subscribe > p {
+  margin-top: 0;
+}
+
+.site-footer.home-footer .footer-social-links {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.site-footer.home-footer .footer-subscribe-form {
+  flex-direction: row;
+  align-items: center;
+}
+
+.site-footer.home-footer .footer-subscribe-form button {
+  width: auto;
+}
+
+.site-footer.home-footer .footer-bottom {
+  width: min(1280px, calc(100% - 48px));
+  padding: 12px 0;
+}
+
+/* Tablet footer */
+@media (max-width: 1100px) {
+  .site-footer.home-footer .footer-container {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 26px 32px;
+  }
+
+  .site-footer.home-footer .footer-brand {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Mobile footer */
+@media (max-width: 600px) {
+  .site-footer.home-footer .footer-container {
+    grid-template-columns: minmax(0, 1fr);
+    width: calc(100% - 36px);
+    gap: 24px;
+    padding: 26px 0 22px;
+  }
+
+  .site-footer.home-footer .footer-brand {
+    grid-column: auto;
+  }
+
+  .site-footer.home-footer .footer-brand > p {
+    max-width: 320px;
+  }
+
+  .site-footer.home-footer .footer-subscribe-form {
+    flex-direction: row;
+  }
+
+  .site-footer.home-footer .footer-subscribe-form button {
+    width: auto;
+  }
+
+  .site-footer.home-footer .footer-bottom {
+    width: calc(100% - 36px);
+    gap: 10px;
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import LineIcon from "../components/LineIcon";
 import Button from "../components/common/Button";
-import heroStudent from "../assets/hero-student-reference.png";
+import heroStudent from "../assets/hero-student.png";
 import { supabase } from "../lib/supabase";
 
 const HOME_FEATURES = [

@@ -27,9 +27,9 @@ export default function Header() {
       <Link to="/" className="site-brand" onClick={closeMenu} aria-label="Admission Saathi home">
         <span className="brand-mark"><Logo size={36} /></span>
         <span className="brand-text">
-          <strong>Admission Saathi</strong>
-          <small>Your journey. Your future.</small>
-        </span>
+           <strong>Admission</strong>
+           <span>Saathi</span>
+         </span>
       </Link>
 
       <nav className="site-nav" aria-label="Main navigation">

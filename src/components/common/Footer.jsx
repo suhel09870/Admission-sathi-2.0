@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Logo from "../illustrations/Logo";
@@ -9,6 +10,13 @@ const navigation = [
   ["Exams", "/exams"],
   ["Scholarships", "/scholarships"],
   ["Compare", "/compare"],
+];
+
+const resources = [
+  ["Dashboard", "/dashboard"],
+  ["Saved Colleges", "/saved-colleges"],
+  ["My Applications", "/my-applications"],
+  ["Important Dates", "/important-dates"],
 ];
 
 const socialLinks = [
@@ -27,31 +35,54 @@ export default function Footer() {
       <div className="footer-container">
         <div className="footer-brand">
           <Link to="/" className="footer-logo">
-            <span className="footer-logo-mark"><Logo size={38} /></span>
+            <span className="footer-logo-mark">
+              <Logo size={48} variant="light" />
+            </span>
             <span className="footer-logo-text">
-              <strong>Admission Saathi</strong>
-              <small>Your journey. Your future.</small>
+              <strong>Admission</strong>
+              <span>Saathi</span>
             </span>
           </Link>
-          <p>Your trusted partner in finding the right college, course and career path.</p>
+
+          <p>
+            Your trusted partner in finding the right college, course and
+            career path.
+          </p>
         </div>
 
         <div className="footer-column">
           <h3>Quick Links</h3>
-          {navigation.map(([label, path]) => <Link key={path} to={path}>{label}</Link>)}
-          <h3 className="footer-subheading">Student Resources</h3>
-          <Link to="/dashboard">Dashboard</Link>
-          <Link to="/saved-colleges">Saved Colleges</Link>
-          <Link to="/my-applications">My Applications</Link>
-          <Link to="/important-dates">Important Dates</Link>
+          {navigation.map(([label, path]) => (
+            <Link key={path} to={path}>
+              {label}
+            </Link>
+          ))}
+        </div>
+
+        <div className="footer-column">
+          <h3>Student Resources</h3>
+          {resources.map(([label, path]) => (
+            <Link key={path} to={path}>
+              {label}
+            </Link>
+          ))}
         </div>
 
         <div className="footer-column footer-connect">
           <h3>Stay Connected</h3>
           <p>Guidance and updates for your higher education journey.</p>
+
           <div className="footer-social-links" aria-label="Social media links">
             {socialLinks.map(([label, href, glyph]) => (
-              <a key={label} href={href} aria-label={label} target="_blank" rel="noreferrer">{glyph}</a>
+              <a
+                key={label}
+                href={href}
+                aria-label={label}
+                target="_blank"
+                rel="noreferrer"
+              >
+                {glyph}
+              </a>
             ))}
           </div>
         </div>
@@ -59,6 +90,7 @@ export default function Footer() {
         <div className="footer-column footer-subscribe">
           <h3>Subscribe for Updates</h3>
           <p>Get the latest admission news and helpful reminders.</p>
+
           <form
             className="footer-subscribe-form"
             onSubmit={(event) => {
@@ -68,9 +100,13 @@ export default function Footer() {
               );
             }}
           >
-            <label className="visually-hidden" htmlFor="footer-subscribe-email">
+            <label
+              className="visually-hidden"
+              htmlFor="footer-subscribe-email"
+            >
               Email address
             </label>
+
             <input
               id="footer-subscribe-email"
               type="email"
@@ -78,8 +114,10 @@ export default function Footer() {
               autoComplete="email"
               required
             />
+
             <button type="submit">Subscribe</button>
           </form>
+
           {subscriptionMessage && (
             <p className="footer-subscribe-message" role="status">
               {subscriptionMessage} <Link to="/signup">Create an account</Link>
@@ -89,7 +127,10 @@ export default function Footer() {
       </div>
 
       <div className="footer-bottom">
-        <div>© {new Date().getFullYear()} Admission Saathi. All rights reserved.</div>
+        <div>
+          © {new Date().getFullYear()} Admission Saathi. All rights reserved.
+        </div>
+
         <div className="footer-legal">
           <Link to="/login">Login</Link>
           <Link to="/signup">Sign Up</Link>
