@@ -8551,12 +8551,12 @@ input:focus-visible {
    ADMISSION SAATHI 2.0 — COURSES REDESIGN
 ========================================= */
 
-.simple-page {
+.courses-page {
   background: #f8fafc;
   color: #0f172a;
 }
 
-.simple-page .simple-page-hero {
+.courses-page .simple-page-hero {
   background:
     radial-gradient(ellipse at 88% 12%, rgba(34, 197, 94, 0.15), transparent 35%),
     linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
@@ -8565,27 +8565,27 @@ input:focus-visible {
   box-shadow: 0 12px 36px rgba(15, 23, 42, 0.045);
 }
 
-.simple-page .page-eyebrow {
+.courses-page .page-eyebrow {
   color: #15803d;
   font-weight: 800;
   letter-spacing: 0.13em;
 }
 
-.simple-page .simple-page-hero h1 {
+.courses-page .simple-page-hero h1 {
   color: #0f172a;
   letter-spacing: -0.04em;
 }
 
-.simple-page .simple-page-hero p {
+.courses-page .simple-page-hero p {
   color: #64748b;
   line-height: 1.8;
 }
 
-.simple-page .simple-page-content {
+.courses-page .simple-page-content {
   align-items: stretch;
 }
 
-.simple-page .simple-page-card {
+.courses-page .simple-page-card {
   min-width: 0;
   border: 1px solid #e2e8f0;
   border-radius: 20px;
@@ -8597,18 +8597,18 @@ input:focus-visible {
     border-color 200ms ease;
 }
 
-.simple-page .simple-page-card:hover {
+.courses-page .simple-page-card:hover {
   transform: translateY(-5px);
   border-color: #bbf7d0;
   box-shadow: 0 16px 35px rgba(15, 23, 42, 0.08);
 }
 
-.simple-page .simple-page-card:focus-visible {
+.courses-page .simple-page-card:focus-visible {
   outline: 3px solid #86efac;
   outline-offset: 3px;
 }
 
-.simple-page .simple-page-card-icon {
+.courses-page .simple-page-card-icon {
   display: grid;
   place-items: center;
   width: 56px;
@@ -8619,52 +8619,52 @@ input:focus-visible {
   font-size: 27px;
 }
 
-.simple-page .simple-page-card h3 {
+.courses-page .simple-page-card h3 {
   color: #0f172a;
   letter-spacing: -0.02em;
 }
 
-.simple-page .simple-page-card p {
+.courses-page .simple-page-card p {
   color: #64748b;
   line-height: 1.75;
 }
 
-.simple-page .simple-page-card > span:last-child {
+.courses-page .simple-page-card > span:last-child {
   color: #15803d !important;
   font-size: 13px !important;
   font-weight: 750;
 }
 
-.simple-page .course-search-empty {
+.courses-page .course-search-empty {
   border: 1px dashed #cbd5e1;
   border-radius: 20px;
   background: #ffffff;
 }
 
-.simple-page .course-search-empty h3 {
+.courses-page .course-search-empty h3 {
   color: #0f172a;
 }
 
-.simple-page .course-search-empty p {
+.courses-page .course-search-empty p {
   color: #64748b;
 }
 
 @media (max-width: 768px) {
-  .simple-page .simple-page-hero {
+  .courses-page .simple-page-hero {
     border-radius: 22px;
   }
 
-  .simple-page .simple-page-card {
+  .courses-page .simple-page-card {
     border-radius: 17px;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .simple-page .simple-page-card {
+  .courses-page .simple-page-card {
     transition: none;
   }
 
-  .simple-page .simple-page-card:hover {
+  .courses-page .simple-page-card:hover {
     transform: none;
   }
 }

@@ -59,7 +59,7 @@ export default function Courses() {
     : courseCategories;
 
   return (
-    <main className="simple-page">
+    <main className="simple-page courses-page">
       <section className="simple-page-hero">
         <span className="page-eyebrow">
           COURSE DISCOVERY
