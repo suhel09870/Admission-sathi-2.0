@@ -102,7 +102,7 @@ export default function ScholarshipDetail() {
   }
 
   return (
-    <main className="simple-page">
+    <main className="simple-page scholarship-detail-page">
       <section
         className="simple-page-hero"
         style={{

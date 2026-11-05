@@ -12914,7 +12914,7 @@ input:focus-visible {
    PHASE 15 — SCHOLARSHIP DETAIL PAGE
 ========================================== */
 
-.simple-page:has(.simple-page-card-icon) {
+.scholarship-detail-page {
   --scholarship-green: #16834a;
   --scholarship-dark: #11683b;
   --scholarship-text: #172b22;
@@ -12926,7 +12926,7 @@ input:focus-visible {
   background: #f6faf7;
 }
 
-.simple-page:has(.simple-page-card-icon) .simple-page-hero {
+.scholarship-detail-page .simple-page-hero {
   position: relative;
   overflow: hidden;
   padding: 52px clamp(22px, 6vw, 80px);
@@ -12940,7 +12940,7 @@ input:focus-visible {
   border-bottom: 1px solid #e1ece4;
 }
 
-.simple-page:has(.simple-page-card-icon) .simple-page-hero h1 {
+.scholarship-detail-page .simple-page-hero h1 {
   max-width: 900px;
   margin: 10px 0 18px;
   color: var(--scholarship-text);
@@ -12951,7 +12951,7 @@ input:focus-visible {
   overflow-wrap: anywhere;
 }
 
-.simple-page:has(.simple-page-card-icon) .simple-page-hero p {
+.scholarship-detail-page .simple-page-hero p {
   max-width: 820px;
   color: var(--scholarship-muted);
   font-size: 16px;
@@ -12959,19 +12959,19 @@ input:focus-visible {
   overflow-wrap: anywhere;
 }
 
-.simple-page:has(.simple-page-card-icon) .page-eyebrow {
+.scholarship-detail-page .page-eyebrow {
   color: var(--scholarship-green);
   font-size: 11px;
   font-weight: 800;
   letter-spacing: 0.14em;
 }
 
-.simple-page:has(.simple-page-card-icon) .simple-page-content {
+.scholarship-detail-page .simple-page-content {
   width: min(1000px, calc(100% - 40px));
   padding: 36px 0 0;
 }
 
-.simple-page:has(.simple-page-card-icon) .simple-page-card {
+.scholarship-detail-page .simple-page-card {
   padding: clamp(24px, 4vw, 40px);
   background: #ffffff;
   border: 1px solid #dfebe2;
@@ -12979,7 +12979,7 @@ input:focus-visible {
   box-shadow: 0 12px 36px rgba(28, 74, 44, 0.055);
 }
 
-.simple-page:has(.simple-page-card-icon) .simple-page-card-icon {
+.scholarship-detail-page .simple-page-card-icon {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -12992,7 +12992,7 @@ input:focus-visible {
   font-size: 27px;
 }
 
-.simple-page:has(.simple-page-card-icon) .simple-page-card h3 {
+.scholarship-detail-page .simple-page-card h3 {
   margin: 0 0 24px;
   color: var(--scholarship-text);
   font-size: clamp(22px, 3vw, 28px);
@@ -13000,7 +13000,7 @@ input:focus-visible {
   letter-spacing: -0.025em;
 }
 
-.simple-page:has(.simple-page-card-icon) .simple-page-card p {
+.scholarship-detail-page .simple-page-card p {
   margin: 0;
   padding: 17px 0;
   color: var(--scholarship-muted);
@@ -13010,22 +13010,22 @@ input:focus-visible {
   overflow-wrap: anywhere;
 }
 
-.simple-page:has(.simple-page-card-icon) .simple-page-card p strong {
+.scholarship-detail-page .simple-page-card p strong {
   display: inline-block;
   min-width: 180px;
   color: var(--scholarship-text);
   font-weight: 750;
 }
 
-.simple-page:has(.simple-page-card-icon) .simple-page-card > div:last-child {
+.scholarship-detail-page .simple-page-card > div:last-child {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
   margin-top: 28px;
 }
 
-.simple-page:has(.simple-page-card-icon) .view-college,
-.simple-page:has(.simple-page-card-icon) .official-link {
+.scholarship-detail-page .view-college,
+.scholarship-detail-page .official-link {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -13045,86 +13045,86 @@ input:focus-visible {
     transform 180ms ease;
 }
 
-.simple-page:has(.simple-page-card-icon) .view-college {
+.scholarship-detail-page .view-college {
   color: #ffffff;
   background: var(--scholarship-green);
   border-color: var(--scholarship-green);
 }
 
-.simple-page:has(.simple-page-card-icon) .view-college:hover {
+.scholarship-detail-page .view-college:hover {
   color: #ffffff;
   background: var(--scholarship-dark);
   transform: translateY(-2px);
 }
 
-.simple-page:has(.simple-page-card-icon) .official-link {
+.scholarship-detail-page .official-link {
   color: var(--scholarship-dark);
   background: #ffffff;
 }
 
-.simple-page:has(.simple-page-card-icon) .official-link:hover {
+.scholarship-detail-page .official-link:hover {
   background: #edf8f0;
   border-color: #acd4b7;
   transform: translateY(-2px);
 }
 
-.simple-page:has(.simple-page-card-icon) a:focus-visible {
+.scholarship-detail-page a:focus-visible {
   outline: 3px solid rgba(22, 131, 74, 0.35);
   outline-offset: 3px;
 }
 
 @media (max-width: 640px) {
-  .simple-page:has(.simple-page-card-icon) {
+  .scholarship-detail-page {
     padding-bottom: 36px;
   }
 
-  .simple-page:has(.simple-page-card-icon) .simple-page-hero {
+  .scholarship-detail-page .simple-page-hero {
     padding: 34px 20px;
   }
 
-  .simple-page:has(.simple-page-card-icon) .simple-page-hero h1 {
+  .scholarship-detail-page .simple-page-hero h1 {
     font-size: clamp(29px, 8vw, 38px);
   }
 
-  .simple-page:has(.simple-page-card-icon) .simple-page-hero p {
+  .scholarship-detail-page .simple-page-hero p {
     font-size: 14px;
   }
 
-  .simple-page:has(.simple-page-card-icon) .simple-page-content {
+  .scholarship-detail-page .simple-page-content {
     width: calc(100% - 32px);
     padding-top: 22px;
   }
 
-  .simple-page:has(.simple-page-card-icon) .simple-page-card {
+  .scholarship-detail-page .simple-page-card {
     padding: 22px 18px;
     border-radius: 17px;
   }
 
-  .simple-page:has(.simple-page-card-icon) .simple-page-card p {
+  .scholarship-detail-page .simple-page-card p {
     padding: 14px 0;
     font-size: 14px;
   }
 
-  .simple-page:has(.simple-page-card-icon) .simple-page-card p strong {
+  .scholarship-detail-page .simple-page-card p strong {
     display: block;
     min-width: 0;
     margin-bottom: 4px;
   }
 
-  .simple-page:has(.simple-page-card-icon) .simple-page-card > div:last-child {
+  .scholarship-detail-page .simple-page-card > div:last-child {
     flex-direction: column;
   }
 
-  .simple-page:has(.simple-page-card-icon) .view-college,
-  .simple-page:has(.simple-page-card-icon) .official-link {
+  .scholarship-detail-page .view-college,
+  .scholarship-detail-page .official-link {
     width: 100%;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .simple-page:has(.simple-page-card-icon) *,
-  .simple-page:has(.simple-page-card-icon) *::before,
-  .simple-page:has(.simple-page-card-icon) *::after {
+  .scholarship-detail-page *,
+  .scholarship-detail-page *::before,
+  .scholarship-detail-page *::after {
     transition-duration: 0.01ms !important;
     animation-duration: 0.01ms !important;
   }
