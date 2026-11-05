@@ -16885,3 +16885,62 @@ body {
     box-sizing: border-box;
   }
 }
+/* PHASE 18 — COLLEGES MOBILE RESPONSIVE POLISH */
+
+@media (max-width: 600px) {
+  .colleges-page:has(.results-header h2) {
+    overflow-x: clip;
+  }
+
+  .colleges-page:has(.results-header h2) .college-card {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+  .colleges-page:has(.results-header h2) .college-card .college-info {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .colleges-page:has(.results-header h2) .college-card .college-actions {
+    grid-template-columns: minmax(0, 1fr);
+    width: 100%;
+    min-width: 0;
+  }
+
+  .colleges-page:has(.results-header h2) .college-card .college-actions a,
+  .colleges-page:has(.results-header h2) .college-card .college-actions button {
+    width: 100%;
+    min-width: 0;
+    min-height: 44px;
+    box-sizing: border-box;
+    font-size: 12px;
+  }
+
+  .colleges-page:has(.results-header h2) .college-card .college-topline {
+    align-items: flex-start;
+  }
+
+  .colleges-page:has(.results-header h2) .results-header > div {
+    min-width: 0;
+  }
+
+  .colleges-page:has(.results-header h2) .results-header > span {
+    letter-spacing: 0;
+  }
+}
+
+@media (max-width: 380px) {
+  .colleges-page:has(.results-header h2) .college-content {
+    width: calc(100% - 24px);
+  }
+
+  .colleges-page:has(.results-header h2) .college-card {
+    padding: 14px !important;
+  }
+
+  .colleges-page:has(.results-header h2) .college-info h3 {
+    font-size: 16px;
+  }
+}
