@@ -13132,9 +13132,10 @@ input:focus-visible {
 
 /* ==========================================
    PHASE 16 — SCHOLARSHIP LISTING PAGE
+   Isolated responsive design
 ========================================== */
 
-.simple-page:has(.simple-page-card-icon):has(a[href^="/scholarships/"]) {
+.scholarships-page {
   --sch-list-green: #16834a;
   --sch-list-dark: #11683b;
   --sch-list-text: #172b22;
@@ -13146,21 +13147,17 @@ input:focus-visible {
   background: #f6faf7;
 }
 
-.simple-page:has(.simple-page-card-icon):has(a[href^="/scholarships/"]) > .simple-page-hero {
+.scholarships-page > .simple-page-hero {
   position: relative;
   overflow: hidden;
   padding: clamp(42px, 6vw, 76px) clamp(22px, 6vw, 80px);
   background:
-    radial-gradient(
-      circle at 88% 12%,
-      rgba(123, 207, 148, 0.22),
-      transparent 33%
-    ),
+    radial-gradient(circle at 88% 12%, rgba(123, 207, 148, 0.22), transparent 33%),
     linear-gradient(135deg, #edf8f0, #ffffff 60%, #e8f5eb);
   border-bottom: 1px solid #e0ece3;
 }
 
-.simple-page:has(.simple-page-card-icon):has(a[href^="/scholarships/"]) > .simple-page-hero .page-eyebrow {
+.scholarships-page > .simple-page-hero .page-eyebrow {
   display: inline-block;
   margin-bottom: 14px;
   color: var(--sch-list-green);
@@ -13169,7 +13166,7 @@ input:focus-visible {
   letter-spacing: 0.14em;
 }
 
-.simple-page:has(.simple-page-card-icon):has(a[href^="/scholarships/"]) > .simple-page-hero h1 {
+.scholarships-page > .simple-page-hero h1 {
   max-width: 850px;
   margin: 0;
   color: var(--sch-list-text);
@@ -13180,7 +13177,7 @@ input:focus-visible {
   overflow-wrap: anywhere;
 }
 
-.simple-page:has(.simple-page-card-icon):has(a[href^="/scholarships/"]) > .simple-page-hero p {
+.scholarships-page > .simple-page-hero p {
   max-width: 740px;
   margin: 18px 0 0;
   color: var(--sch-list-muted);
@@ -13188,16 +13185,17 @@ input:focus-visible {
   line-height: 1.85;
 }
 
-.simple-page:has(.simple-page-card-icon):has(a[href^="/scholarships/"]) > .simple-page-content {
+.scholarships-page .scholarships-page-content {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   align-items: stretch;
   gap: 22px;
   width: min(1100px, calc(100% - 48px));
+  margin: 0 auto;
   padding: 38px 0 0;
 }
 
-.simple-page:has(.simple-page-card-icon):has(a[href^="/scholarships/"]) .simple-page-card {
+.scholarships-page .simple-page-card {
   display: flex;
   min-width: 0;
   flex-direction: column;
@@ -13213,13 +13211,13 @@ input:focus-visible {
     border-color 180ms ease;
 }
 
-.simple-page:has(.simple-page-card-icon):has(a[href^="/scholarships/"]) .simple-page-card:hover {
+.scholarships-page .simple-page-card:hover {
   transform: translateY(-4px);
   border-color: #bddfc7;
   box-shadow: 0 16px 34px rgba(26, 71, 43, 0.09);
 }
 
-.simple-page:has(.simple-page-card-icon):has(a[href^="/scholarships/"]) .simple-page-card-icon {
+.scholarships-page .simple-page-card-icon {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -13232,7 +13230,7 @@ input:focus-visible {
   font-size: 25px;
 }
 
-.simple-page:has(.simple-page-card-icon):has(a[href^="/scholarships/"]) .simple-page-card > .page-eyebrow {
+.scholarships-page .simple-page-card > .page-eyebrow {
   display: inline-block;
   margin-bottom: 10px;
   color: var(--sch-list-green);
@@ -13242,7 +13240,7 @@ input:focus-visible {
   line-height: 1.6;
 }
 
-.simple-page:has(.simple-page-card-icon):has(a[href^="/scholarships/"]) .simple-page-card h3 {
+.scholarships-page .simple-page-card h3 {
   margin: 0 0 12px;
   color: var(--sch-list-text);
   font-size: clamp(20px, 2.2vw, 25px);
@@ -13252,7 +13250,7 @@ input:focus-visible {
   overflow-wrap: anywhere;
 }
 
-.simple-page:has(.simple-page-card-icon):has(a[href^="/scholarships/"]) .simple-page-card p {
+.scholarships-page .simple-page-card p {
   width: 100%;
   margin: 0;
   padding: 10px 0;
@@ -13263,22 +13261,22 @@ input:focus-visible {
   overflow-wrap: anywhere;
 }
 
-.simple-page:has(.simple-page-card-icon):has(a[href^="/scholarships/"]) .simple-page-card p strong {
+.scholarships-page .simple-page-card p strong {
   color: var(--sch-list-text);
   font-weight: 750;
 }
 
-.simple-page:has(.simple-page-card-icon):has(a[href^="/scholarships/"]) .simple-page-card > div:last-child {
+.scholarships-page .scholarship-card-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
   width: 100%;
-  margin-top: auto !important;
+  margin-top: auto;
   padding-top: 22px;
 }
 
-.simple-page:has(.simple-page-card-icon):has(a[href^="/scholarships/"]) .view-college,
-.simple-page:has(.simple-page-card-icon):has(a[href^="/scholarships/"]) .official-link {
+.scholarships-page .scholarship-card-actions .view-college,
+.scholarships-page .scholarship-card-actions .official-link {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -13297,29 +13295,34 @@ input:focus-visible {
     transform 180ms ease;
 }
 
-.simple-page:has(.simple-page-card-icon):has(a[href^="/scholarships/"]) .view-college {
+.scholarships-page .scholarship-card-actions .view-college {
   color: #ffffff;
   background: var(--sch-list-green);
   border-color: var(--sch-list-green);
 }
 
-.simple-page:has(.simple-page-card-icon):has(a[href^="/scholarships/"]) .view-college:hover {
+.scholarships-page .scholarship-card-actions .view-college:hover {
   color: #ffffff;
   background: var(--sch-list-dark);
   transform: translateY(-2px);
 }
 
-.simple-page:has(.simple-page-card-icon):has(a[href^="/scholarships/"]) .official-link {
+.scholarships-page .scholarship-card-actions .official-link {
   color: var(--sch-list-dark);
   background: #ffffff;
 }
 
-.simple-page:has(.simple-page-card-icon):has(a[href^="/scholarships/"]) .official-link:hover {
+.scholarships-page .scholarship-card-actions .official-link:hover {
   background: #eaf6ed;
   transform: translateY(-2px);
 }
 
-.simple-page:has(.simple-page-card-icon):has(a[href^="/scholarships/"]) .no-results {
+.scholarships-page .scholarship-card-actions a:focus-visible {
+  outline: 3px solid rgba(22, 131, 74, 0.35);
+  outline-offset: 3px;
+}
+
+.scholarships-page .no-results {
   grid-column: 1 / -1;
   padding: 48px 24px;
   background: #ffffff;
@@ -13328,66 +13331,62 @@ input:focus-visible {
   text-align: center;
 }
 
-.simple-page:has(.simple-page-card-icon):has(a[href^="/scholarships/"]) .no-results > div {
+.scholarships-page .no-results > div {
   margin-bottom: 14px;
   font-size: 36px;
 }
 
-.simple-page:has(.simple-page-card-icon):has(a[href^="/scholarships/"]) .no-results h3 {
+.scholarships-page .no-results h3 {
   margin: 0 0 10px;
   color: var(--sch-list-text);
   font-size: 23px;
 }
 
-.simple-page:has(.simple-page-card-icon):has(a[href^="/scholarships/"]) .no-results p {
+.scholarships-page .no-results p {
   color: var(--sch-list-muted);
   line-height: 1.8;
 }
 
-.simple-page:has(.simple-page-card-icon):has(a[href^="/scholarships/"]) a:focus-visible {
-  outline: 3px solid rgba(22, 131, 74, 0.35);
-  outline-offset: 3px;
-}
-
 @media (max-width: 760px) {
-  .simple-page:has(.simple-page-card-icon):has(a[href^="/scholarships/"]) > .simple-page-content {
+  .scholarships-page .scholarships-page-content {
     grid-template-columns: minmax(0, 1fr);
     width: calc(100% - 32px);
     gap: 16px;
     padding-top: 24px;
   }
 
-  .simple-page:has(.simple-page-card-icon):has(a[href^="/scholarships/"]) > .simple-page-hero {
+  .scholarships-page > .simple-page-hero {
     padding: 38px 20px;
   }
 
-  .simple-page:has(.simple-page-card-icon):has(a[href^="/scholarships/"]) > .simple-page-hero h1 {
+  .scholarships-page > .simple-page-hero h1 {
     font-size: clamp(31px, 8vw, 42px);
   }
 
-  .simple-page:has(.simple-page-card-icon):has(a[href^="/scholarships/"]) > .simple-page-hero p {
+  .scholarships-page > .simple-page-hero p {
     font-size: 14px;
   }
 
-  .simple-page:has(.simple-page-card-icon):has(a[href^="/scholarships/"]) .simple-page-card {
+  .scholarships-page .simple-page-card {
     padding: 22px;
     border-radius: 17px;
   }
 
-  .simple-page:has(.simple-page-card-icon):has(a[href^="/scholarships/"]) .simple-page-card > div:last-child {
+  .scholarships-page .scholarship-card-actions {
     flex-direction: column;
   }
 
-  .simple-page:has(.simple-page-card-icon):has(a[href^="/scholarships/"]) .view-college,
-  .simple-page:has(.simple-page-card-icon):has(a[href^="/scholarships/"]) .official-link {
+  .scholarships-page .scholarship-card-actions .view-college,
+  .scholarships-page .scholarship-card-actions .official-link {
     width: 100%;
+    box-sizing: border-box;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .simple-page:has(.simple-page-card-icon):has(a[href^="/scholarships/"]) *,
-  .simple-page:has(.simple-page-card-icon):has(a[href^="/scholarships/"]) *::before,
-  .simple-page:has(.simple-page-card-icon):has(a[href^="/scholarships/"]) *::after {
+  .scholarships-page *,
+  .scholarships-page *::before,
+  .scholarships-page *::after {
     transition-duration: 0.01ms !important;
     animation-duration: 0.01ms !important;
   }

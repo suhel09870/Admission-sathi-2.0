@@ -13,23 +13,18 @@ export default function Scholarships() {
       setLoading(true);
       setError("");
 
-      const { data, error: scholarshipError } =
-        await supabase
-          .from("scholarships")
-          .select(
-            "id, title, provider, description, eligibility, amount, application_deadline, application_url, source_url, verification_status"
-          )
-          .order("application_deadline", {
-            ascending: true,
-            nullsFirst: false,
-          });
+      const { data, error: scholarshipError } = await supabase
+        .from("scholarships")
+        .select(
+          "id, title, provider, description, eligibility, amount, application_deadline, application_url, source_url, verification_status"
+        )
+        .order("application_deadline", {
+          ascending: true,
+          nullsFirst: false,
+        });
 
       if (scholarshipError) {
-        console.error(
-          "Scholarships loading error:",
-          scholarshipError
-        );
-
+        console.error("Scholarships loading error:", scholarshipError);
         setError("Scholarships could not be loaded.");
         setLoading(false);
         return;
@@ -44,17 +39,11 @@ export default function Scholarships() {
 
   if (loading) {
     return (
-      <main className="simple-page">
+      <main className="simple-page scholarships-page">
         <section className="simple-page-hero">
-          <span className="page-eyebrow">
-            SCHOLARSHIP DISCOVERY
-          </span>
-
+          <span className="page-eyebrow">SCHOLARSHIP DISCOVERY</span>
           <h1>Loading scholarships...</h1>
-
-          <p>
-            Fetching verified scholarship opportunities.
-          </p>
+          <p>Fetching verified scholarship opportunities.</p>
         </section>
       </main>
     );
@@ -62,14 +51,10 @@ export default function Scholarships() {
 
   if (error) {
     return (
-      <main className="simple-page">
+      <main className="simple-page scholarships-page">
         <section className="simple-page-hero">
-          <span className="page-eyebrow">
-            SCHOLARSHIP DISCOVERY
-          </span>
-
+          <span className="page-eyebrow">SCHOLARSHIP DISCOVERY</span>
           <h1>Unable to load scholarships.</h1>
-
           <p>{error}</p>
         </section>
       </main>
@@ -77,39 +62,26 @@ export default function Scholarships() {
   }
 
   return (
-    <main className="simple-page">
+    <main className="simple-page scholarships-page">
       <section className="simple-page-hero">
-        <span className="page-eyebrow">
-          SCHOLARSHIP DISCOVERY
-        </span>
+        <span className="page-eyebrow">SCHOLARSHIP DISCOVERY</span>
 
-        <h1>
-          Find support for your education journey.
-        </h1>
+        <h1>Find support for your education journey.</h1>
 
         <p>
-          Explore verified scholarship opportunities and
-          discover financial support options that can help
-          you continue your education.
+          Explore verified scholarship opportunities and discover
+          financial support options that can help you continue your
+          education.
         </p>
       </section>
 
-      <section
-        className="simple-page-content"
-        style={{
-          maxWidth: "1100px",
-          margin: "0 auto",
-        }}
-      >
+      <section className="simple-page-content scholarships-page-content">
         {scholarships.length === 0 ? (
           <div className="no-results">
             <div>🎓</div>
-
             <h3>No scholarships available</h3>
-
             <p>
-              Verified scholarship information is not
-              currently available.
+              Verified scholarship information is not currently available.
             </p>
           </div>
         ) : (
@@ -121,36 +93,31 @@ export default function Scholarships() {
               style={{
                 width: "100%",
                 boxSizing: "border-box",
-                cursor: "pointer",
               }}
             >
-              <div className="simple-page-card-icon">
-                🎓
-              </div>
+              <div className="simple-page-card-icon">🎓</div>
 
               <span className="page-eyebrow">
-                {isSupabaseConfigured ? "VERIFIED SCHOLARSHIP" : "DEMO SCHOLARSHIP"}
+                {isSupabaseConfigured
+                  ? "VERIFIED SCHOLARSHIP"
+                  : "DEMO SCHOLARSHIP"}
               </span>
 
               <h3>{scholarship.title}</h3>
 
               {scholarship.provider && (
                 <p>
-                  <strong>Provider:</strong>{" "}
-                  {scholarship.provider}
+                  <strong>Provider:</strong> {scholarship.provider}
                 </p>
               )}
 
               {scholarship.description && (
-                <p>
-                  {scholarship.description}
-                </p>
+                <p>{scholarship.description}</p>
               )}
 
               {scholarship.amount && (
                 <p>
-                  <strong>Amount:</strong>{" "}
-                  {scholarship.amount}
+                  <strong>Amount:</strong> {scholarship.amount}
                 </p>
               )}
 
@@ -168,14 +135,7 @@ export default function Scholarships() {
                 </p>
               )}
 
-              <div
-                style={{
-                  display: "flex",
-                  gap: "10px",
-                  flexWrap: "wrap",
-                  marginTop: "18px",
-                }}
-              >
+              <div className="scholarship-card-actions">
                 <Link
                   to={`/scholarships/${scholarship.id}`}
                   className="view-college"
@@ -189,9 +149,6 @@ export default function Scholarships() {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="official-link"
-                    onClick={(event) =>
-                      event.stopPropagation()
-                    }
                   >
                     Apply ↗
                   </a>
